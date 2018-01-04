@@ -132,9 +132,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BasicFunc.h" />
+    <ClInclude Include="ConstantValue.h" />
+    <ClInclude Include="pluginMain.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicFunc.cpp" />
+    <ClCompile Include="pluginMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

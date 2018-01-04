@@ -18,9 +18,18 @@
     <ClInclude Include="BasicFunc.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ConstantValue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="pluginMain.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicFunc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="pluginMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
