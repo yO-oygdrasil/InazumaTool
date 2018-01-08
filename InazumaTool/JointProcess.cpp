@@ -2,6 +2,16 @@
 
 
 
+JointProcess::JointLimit::JointLimit(float rxMin, float ryMin, float rzMin, float rxMax, float ryMax, float rzMax, MString jName, bool inRadian)
+{
+	min = MVector(rxMin, ryMin, rzMin);
+	max = MVector(rxMax, ryMax, rzMax);
+	if (!inRadian)
+	{
+		min /= ConstantValue::DPR;
+	}
+}
+
 bool JointProcess::JointLimit::SetLimit(MObject & mobject)
 {
 	if (mobject.hasFn(MFn::kTransform))
@@ -33,10 +43,21 @@ bool JointProcess::JointLimit::SetLimit(MFnTransform & mfnTrans)
 
 bool JointProcess::SetJointLimit(MObject & mobject, MString jointType)
 {
-	return false;
+	if (mobject.hasFn(MFn::kTransform))
+	{
+		return SetJointLimit(MFnTransform(mobject),jointType);
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool JointProcess::SetJointLimit(MFnTransform & mfnTransform, MString jointType)
 {
+	switch (jointType)
+	{
+
+	}
 	return false;
 }

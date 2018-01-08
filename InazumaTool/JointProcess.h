@@ -5,7 +5,8 @@
 #include<maya/MFnIkJoint.h>
 #include "ConstantValue.h"
 #include<maya/MFn.h>
-
+#include <list>
+#include <numeric>  
 static class JointProcess
 {
 public:
@@ -18,10 +19,12 @@ private:
 	{
 	public:
 		MVector min, max;
+		JointLimit(float rxMin, float ryMin, float rzMin, float rxMax, float ryMax, float rzMax, MString jName = "", bool inRadian = false);
 		bool SetLimit(MObject& mobject);
 		bool SetLimit(MFnTransform& mfnTrans);
 	};
-
+	std::list<JointLimit> limitDictionary;// = { new JointLimit(};
+	
 
 };
 

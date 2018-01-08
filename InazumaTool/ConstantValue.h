@@ -2,7 +2,7 @@
 static class ConstantValue
 {
 public:
-	const float PI = 3.1415926;
-	const float DPR = 180 / PI;
+	const static float PI;
+	const static float DPR;
 };
 
