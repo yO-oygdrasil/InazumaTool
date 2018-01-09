@@ -9,5 +9,7 @@ public:
 	void SetTranslateLimit(MObject & mObject, float minX, float minY, float minZ, float maxX, float maxY, float maxZ);
 	void SetTranslateLimit(MFnTransform & mfnTrans, float minX, float minY, float minZ, float maxX, float maxY, float maxZ);
 
+	MObject GetSelectedObject(int index)
+
 };
 
