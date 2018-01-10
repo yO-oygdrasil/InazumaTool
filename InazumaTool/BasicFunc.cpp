@@ -1,5 +1,4 @@
 #include "BasicFunc.h"
-#include "ConstantValue.h"
 
 
 void BasicFunc::SetTranslateLimit(MObject & mObject, float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
@@ -22,4 +21,14 @@ void BasicFunc::SetTranslateLimit(MFnTransform & mfnTrans, float minX, float min
 	mfnTrans.setLimit(MFnTransform::LimitType::kTranslateMaxX, maxX);
 	mfnTrans.setLimit(MFnTransform::LimitType::kTranslateMaxY, maxY);
 	mfnTrans.setLimit(MFnTransform::LimitType::kTranslateMaxZ, maxZ);
+}
+
+MObject BasicFunc::GetSelectedObject(int index)
+{
+	MSelectionList selected;
+	MGlobal::getActiveSelectionList(selected);
+
+
+
+	return MObject();
 }
