@@ -10,21 +10,19 @@
 static class JointProcess
 {
 public:
-	bool SetJointLimit(MObject& mobject, MString jointType);
-	bool SetJointLimit(MFnTransform& mfnTrans, MString jointType);
-
-
-private:
-	class JointLimit
+	enum JointType
 	{
-	public:
-		MVector min, max;
-		JointLimit(float rxMin, float ryMin, float rzMin, float rxMax, float ryMax, float rzMax, MString jName = "", bool inRadian = false);
-		bool SetLimit(MObject& mobject);
-		bool SetLimit(MFnTransform& mfnTrans);
+		Shoulder,
+		FingerMiddle,
+		FingerRoot,
+		Default
 	};
-	std::list<JointLimit> limitDictionary;// = { new JointLimit(};
-	
+
+	bool SetJointLimit(MObject& mobject, JointType jointType);
+	bool SetJointLimit(MFnTransform& mfnTrans, JointType jointType);
+private:
+	bool SetLimit(MFnTransform & mfnTrans, float rxMin, float ryMin, float rzMin, float rxMax, float ryMax, float rzMax, bool inRadian);
+
 
 };
 

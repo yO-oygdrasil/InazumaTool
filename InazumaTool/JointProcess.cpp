@@ -2,36 +2,23 @@
 
 
 
-JointProcess::JointLimit::JointLimit(float rxMin, float ryMin, float rzMin, float rxMax, float ryMax, float rzMax, MString jName, bool inRadian)
+bool JointProcess::SetLimit(MFnTransform & mfnTrans, float rxMin, float ryMin, float rzMin, float rxMax, float ryMax, float rzMax, bool inRadian)
 {
-	min = MVector(rxMin, ryMin, rzMin);
-	max = MVector(rxMax, ryMax, rzMax);
 	if (!inRadian)
 	{
-		min /= ConstantValue::DPR;
+		rxMin /= ConstantValue::DPR;
+		ryMin /= ConstantValue::DPR;
+		rzMin /= ConstantValue::DPR;
+		rxMax /= ConstantValue::DPR;
+		ryMax /= ConstantValue::DPR;
+		rzMax /= ConstantValue::DPR;
 	}
-}
-
-bool JointProcess::JointLimit::SetLimit(MObject & mobject)
-{
-	if (mobject.hasFn(MFn::kTransform))
-	{
-		return SetLimit(MFnTransform(mobject));
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool JointProcess::JointLimit::SetLimit(MFnTransform & mfnTrans)
-{
-	mfnTrans.setLimit(MFnTransform::kRotateMinX, min.x);
-	mfnTrans.setLimit(MFnTransform::kRotateMinY, min.y);
-	mfnTrans.setLimit(MFnTransform::kRotateMinZ, min.z);
-	mfnTrans.setLimit(MFnTransform::kRotateMaxX, max.x);
-	mfnTrans.setLimit(MFnTransform::kRotateMaxY, max.y);
-	mfnTrans.setLimit(MFnTransform::kRotateMaxZ, max.z);
+	mfnTrans.setLimit(MFnTransform::kRotateMinX, rxMin);
+	mfnTrans.setLimit(MFnTransform::kRotateMinY, ryMin);
+	mfnTrans.setLimit(MFnTransform::kRotateMinZ, rzMin);
+	mfnTrans.setLimit(MFnTransform::kRotateMaxX, rxMax);
+	mfnTrans.setLimit(MFnTransform::kRotateMaxY, ryMax);
+	mfnTrans.setLimit(MFnTransform::kRotateMaxZ, rzMax);
 	mfnTrans.enableLimit(MFnTransform::kRotateMinX, true);
 	mfnTrans.enableLimit(MFnTransform::kRotateMinY, true);
 	mfnTrans.enableLimit(MFnTransform::kRotateMinZ, true);
@@ -41,7 +28,7 @@ bool JointProcess::JointLimit::SetLimit(MFnTransform & mfnTrans)
 	return true;
 }
 
-bool JointProcess::SetJointLimit(MObject & mobject, MString jointType)
+bool JointProcess::SetJointLimit(MObject & mobject, JointType jointType)
 {
 	if (mobject.hasFn(MFn::kTransform))
 	{
@@ -53,11 +40,37 @@ bool JointProcess::SetJointLimit(MObject & mobject, MString jointType)
 	}
 }
 
-bool JointProcess::SetJointLimit(MFnTransform & mfnTransform, MString jointType)
+bool JointProcess::SetJointLimit(MFnTransform & mfnTransform, JointType jointType)
 {
 	switch (jointType)
 	{
+	case JointType::Default:
+	{
+		SetLimit(mfnTransform, -360, -360, -360, 360, 360, 360, false);
+		break;
+	}
+	case JointType::FingerMiddle:
+	{
+		SetLimit(mfnTransform, 0, 0, -90, 0, 0, 30, false);
+		break;
+	}
+	case JointType::FingerRoot:
+	{
+		SetLimit(mfnTransform, 0, -30, -90, 0, 30, 60, false);
+		break;
+	}
+	case JointType::Shoulder:
+	{
+		SetLimit(mfnTransform, -80, -90, -120, 30, 90, 120, false);
+		break;	
+	}
+	default:
+	{
+		return false;
+		//SetLimit(mfnTransform, -360, -360, -360, 360, 360, 360, false);
 
 	}
-	return false;
+
+	}
+	return true;
 }

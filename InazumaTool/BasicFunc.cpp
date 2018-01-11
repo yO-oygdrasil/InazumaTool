@@ -27,8 +27,63 @@ MObject BasicFunc::GetSelectedObject(int index)
 {
 	MSelectionList selected;
 	MGlobal::getActiveSelectionList(selected);
-
-
-
-	return MObject();
+	MObject mObject;
+	if (index < selected.length)
+	{
+		selected.getDependNode(index, mObject);
+	}
+	else
+	{
+		mObject = MObject();
+	}
+	return mObject;
 }
+
+MDagPath BasicFunc::GetSelectedDagPath(int index)
+{
+	MSelectionList selected;
+	MGlobal::getActiveSelectionList(selected);
+	MDagPath dagPath;
+	if (index < selected.length)
+	{
+		selected.getDagPath(index, dagPath);
+	}
+	else
+	{
+		dagPath = MDagPath();
+	}
+	return dagPath;
+}
+
+
+
+void BasicFunc::PrintMVector(MVector vec)
+{
+	//may be not useful, mo le
+
+}
+
+MSelectionList BasicFunc::GetObjectsByName(MString name)
+{
+	MSelectionList matched;
+	MGlobal::getSelectionListByName(name, matched);
+	return matched;
+}
+
+MObject BasicFunc::GetObjectByName(MString name, int index)
+{
+	MSelectionList matched = GetObjectsByName(name);
+	MObject mObject;
+	if (index < matched.length)
+	{
+		matched.getDependNode(index, mObject);
+	}
+	else
+	{
+		mObject = MObject();
+	}
+	return mObject;
+}
+
+
+
