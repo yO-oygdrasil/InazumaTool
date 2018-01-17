@@ -85,5 +85,38 @@ MObject BasicFunc::GetObjectByName(MString name, int index)
 	return mObject;
 }
 
+MObject BasicFunc::AddChildCircle(MObject& targetObject)
+{
+	MFnTransform targetTransform(targetObject);
+	MString ctlName = "ctl_" + targetTransform.name();
+	ctlName = Incubater::CreateCTL_Crystal(ctlName);
+	SetTransformParent(ctlName, targetTransform.fullPathName());
+	MObject circleObject = BasicFunc::GetObjectByName(ctlName);
+	MFnTransform circleTransform(circleObject);
+	circleTransform.setTranslation(MVector(0, 0, 0), MSpace::kObject);
+	circleTransform.setRotation(MEulerRotation(0, 90 / ConstantValue::DPR, 0));
+	FreezeTransform(circleTransform);
+
+	return circleObject;
+}
+
+
+void BasicFunc::SetTransformParent(MFnTransform& c, MFnTransform& p)
+{	
+	SetTransformParent(c.fullPathName(), p.fullPathName());
+}
+
+void BasicFunc::SetTransformParent(MString cFullName, MString pFullName)
+{
+	MGlobal::executePythonCommand("cmds.parent(" + cFullName + "," + pFullName + "))");
+}
+
+void BasicFunc::FreezeTransform(MFnTransform& targetTransform)
+{
+	MGlobal::executePythonCommand("cmds.makeIdentity(" + targetTransform.fullPathName() + ",apply=True");
+}
+
+
+
 
 

@@ -7,7 +7,7 @@
 static class Incubater
 {
 public:
-	static MString CreateCTL_Crystal();
+	static MString CreateCTL_Crystal(MString ctlName = "ctl_sample");
 	static MString CreateRemapValueNode(float inputMin, float inputMax, float outputMin, float outputMax);
 };
 

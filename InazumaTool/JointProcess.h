@@ -18,10 +18,10 @@ public:
 		Default
 	};
 
-	bool SetJointLimit(MObject& mobject, JointType jointType);
-	bool SetJointLimit(MFnTransform& mfnTrans, JointType jointType);
+	static bool SetJointLimit(MObject& mobject, JointType jointType);
+	static bool SetJointLimit(MFnTransform& mfnTrans, JointType jointType);
 private:
-	bool SetLimit(MFnTransform & mfnTrans, float rxMin, float ryMin, float rzMin, float rxMax, float ryMax, float rzMax, bool inRadian);
+	static bool SetLimit(MFnTransform & mfnTrans, float rxMin, float ryMin, float rzMin, float rxMax, float ryMax, float rzMax, bool inRadian);
 
 
 };

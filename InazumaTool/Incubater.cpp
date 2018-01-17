@@ -2,9 +2,9 @@
 
 
 
-MString Incubater::CreateCTL_Crystal()
+MString Incubater::CreateCTL_Crystal(MString ctlName = "ctl_sample")
 {
-	return MGlobal::executePythonCommandStringResult("cmds.curve(n='ctl_sample', d=1,\
+	return MGlobal::executePythonCommandStringResult("cmds.curve(n='" + ctlName + "', d=1,\
                    p=[(0, 1, 0), (0, 0, 1), (1, 0, 0), (0, -1, 0), (0, 0, -1),\
                       (1, 0, 0), (0, 1, 0), (0, 0, -1),(-1, 0, 0), (0, -1, 0), \
                       (0, 0, 1), (-1, 0, 0), (0, 1, 0)],\

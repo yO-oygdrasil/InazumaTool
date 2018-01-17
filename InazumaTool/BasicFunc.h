@@ -6,6 +6,10 @@
 #include <maya/MSelectionList.h>
 #include <maya/MDagPath.h>
 #include <maya/MVector.h>
+#include <maya/MFnNurbsCurve.h>
+#include <maya/MPointArray.h>
+#include "Incubater.h"
+#include <maya/MEulerRotation.h>
 static class BasicFunc
 {
 public:
@@ -20,5 +24,9 @@ public:
 	static MSelectionList GetObjectsByName(MString name);
 	static MObject GetObjectByName(MString name, int index = 0);
 
+	static MObject AddChildCircle(MObject& targetObject);
+	static void SetTransformParent(MFnTransform& c, MFnTransform& p);
+	static void SetTransformParent(MString cFullName, MString pFullName);
+	static void FreezeTransform(MFnTransform& targetTransform);
 };
 
