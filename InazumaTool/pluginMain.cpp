@@ -42,7 +42,7 @@ MStatus uninitializePlugin(MObject obj)
 	plugin.deregisterCommand("Print");
 	
 	MString menus = MGlobal::executePythonCommandStringResult("cmds.window(mel.eval('$temp1=$gMainWindow'), q=True, menuArray=True)");
-	cout << menus << endl;
+	BasicFunc::Print(menus);
 	//MString* menuArr = new MString[1];
 	//menuArr[0] = totalMenuName;
 	//MStringArray menuArr();	

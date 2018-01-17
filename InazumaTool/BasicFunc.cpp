@@ -28,7 +28,7 @@ MObject BasicFunc::GetSelectedObject(int index)
 	MSelectionList selected;
 	MGlobal::getActiveSelectionList(selected);
 	MObject mObject;
-	if (index < selected.length)
+	if (index < selected.length())
 	{
 		selected.getDependNode(index, mObject);
 	}
@@ -63,6 +63,13 @@ void BasicFunc::PrintMVector(MVector vec)
 
 }
 
+void BasicFunc::Print(MString str)
+{
+	MGlobal::executePythonCommand("print " + str);
+}
+
+
+
 MSelectionList BasicFunc::GetObjectsByName(MString name)
 {
 	MSelectionList matched;
@@ -74,7 +81,7 @@ MObject BasicFunc::GetObjectByName(MString name, int index)
 {
 	MSelectionList matched = GetObjectsByName(name);
 	MObject mObject;
-	if (index < matched.length)
+	if (index < matched.length())
 	{
 		matched.getDependNode(index, mObject);
 	}
@@ -96,7 +103,6 @@ MObject BasicFunc::AddChildCircle(MObject& targetObject)
 	circleTransform.setTranslation(MVector(0, 0, 0), MSpace::kObject);
 	circleTransform.setRotation(MEulerRotation(0, 90 / ConstantValue::DPR, 0));
 	FreezeTransform(circleTransform);
-
 	return circleObject;
 }
 

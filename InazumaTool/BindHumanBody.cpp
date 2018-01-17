@@ -3,7 +3,7 @@
 
 
 
-bool BindHumanBody::BindFinger(MObject rootJointObject, MString fingerTag, bool useIK = false)
+bool BindHumanBody::BindFinger(MObject& rootJointObject, MString fingerTag, bool useIK = false)
 {
 	MFnIkJoint rootJoint(rootJointObject);
 	
