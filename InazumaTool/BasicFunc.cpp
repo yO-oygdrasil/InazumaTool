@@ -44,7 +44,7 @@ MDagPath BasicFunc::GetSelectedDagPath(int index)
 	MSelectionList selected;
 	MGlobal::getActiveSelectionList(selected);
 	MDagPath dagPath;
-	if (index < selected.length)
+	if (index < selected.length())
 	{
 		selected.getDagPath(index, dagPath);
 	}
@@ -96,7 +96,7 @@ MObject BasicFunc::AddChildCircle(MObject& targetObject)
 {
 	MFnTransform targetTransform(targetObject);
 	MString ctlName = "ctl_" + targetTransform.name();
-	ctlName = Incubater::CreateCTL_Crystal(ctlName);
+	ctlName = BasicFunc::CreateCTL_Crystal(ctlName);
 	SetTransformParent(ctlName, targetTransform.fullPathName());
 	MObject circleObject = BasicFunc::GetObjectByName(ctlName);
 	MFnTransform circleTransform(circleObject);
@@ -104,6 +104,27 @@ MObject BasicFunc::AddChildCircle(MObject& targetObject)
 	circleTransform.setRotation(MEulerRotation(0, 90 / ConstantValue::DPR, 0));
 	FreezeTransform(circleTransform);
 	return circleObject;
+}
+
+MString BasicFunc::CreateCTL_Crystal(MString ctlName)
+{
+	return MGlobal::executePythonCommandStringResult("cmds.curve(n='" + ctlName + "', d=1,\
+                   p=[(0, 1, 0), (0, 0, 1), (1, 0, 0), (0, -1, 0), (0, 0, -1),\
+                      (1, 0, 0), (0, 1, 0), (0, 0, -1),(-1, 0, 0), (0, -1, 0), \
+                      (0, 0, 1), (-1, 0, 0), (0, 1, 0)],\
+                   k=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])");
+
+}
+
+MString BasicFunc::CreateRemapValueNode(float inputMin, float inputMax, float outputMin, float outputMax)
+{
+	MFnDependencyNode dependencyNode;
+	dependencyNode.create("remapValue");
+	dependencyNode.findPlug("inputMin").setFloat(inputMin);
+	dependencyNode.findPlug("inputMax").setFloat(inputMax);
+	dependencyNode.findPlug("outputMin").setFloat(outputMin);
+	dependencyNode.findPlug("outputMax").setFloat(outputMax);
+	return dependencyNode.absoluteName();
 }
 
 

@@ -5,12 +5,13 @@ class TempClass : public MPxCommand
 public:
 	MStatus doIt(const MArgList& args)
 	{
-		cout << "Hello oMaya " << args.asString(0).asChar() << endl;
+		BasicFunc::Print("oooo");
+		//cout << "Hello oMaya " << args.asString(0).asChar() << endl;
 		return MS::kSuccess;
 	}
 	static void* creator()
 	{
-		std::cout << "test ok" << endl;
+		//std::cout << "test ok" << endl;
 		return new TempClass;
 	}
 };
@@ -42,11 +43,19 @@ MStatus uninitializePlugin(MObject obj)
 	plugin.deregisterCommand("Print");
 	
 	MString menus = MGlobal::executePythonCommandStringResult("cmds.window(mel.eval('$temp1=$gMainWindow'), q=True, menuArray=True)");
-	BasicFunc::Print(menus);
-	//MString* menuArr = new MString[1];
-	//menuArr[0] = totalMenuName;
-	//MStringArray menuArr();	
-	//plugin.removeMenuItem(MStringArray(menuArr, 1));
-	//MGlobal::executeCommand("print \"unload haha la da fatang\"");
+	//BasicFunc::Print(menus);
+	MStringArray menuNames;
+	menus.split(',', menuNames);
+	for (int i = 0; i < menuNames.length(); i++)
+	{
+		//BasicFunc::Print(menuNames[i]);
+		MString labelName = MGlobal::executePythonCommandStringResult("cmds.menu(" + menuNames[i] + ",q=True,label=True)");
+		if (labelName == "InazumaTool")
+		{
+			MGlobal::executePythonCommand("cmds.deleteUI(" + menuNames[i] + ",m=True)");
+		}
+	}
+
 	return MStatus::kSuccess;
 }
+

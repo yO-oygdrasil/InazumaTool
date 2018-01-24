@@ -1,9 +1,10 @@
 #pragma once
 #include <maya/MObject.h>
-#include <maya/MFnTransform.h>
 #include <maya/MFnIkJoint.h>
+#include <maya/MFnTransform.h>
+#include <maya/MPlug.h>
 #include "JointProcess.h"
-#include "Incubater.h"
+#include "BasicFunc.h"
 static class BindHumanBody
 {
 public:

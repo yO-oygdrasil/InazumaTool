@@ -3,7 +3,7 @@
 
 
 
-bool BindHumanBody::BindFinger(MObject& rootJointObject, MString fingerTag, bool useIK = false)
+bool BindHumanBody::BindFinger(MObject& rootJointObject, MString fingerTag, bool useIK)
 {
 	MFnIkJoint rootJoint(rootJointObject);
 	
@@ -16,17 +16,17 @@ bool BindHumanBody::BindFinger(MObject& rootJointObject, MString fingerTag, bool
 			MObject finalJointObject = middleJoint.child(0);
 			MFnIkJoint finalJoint(finalJointObject);
 			//enough, start control
-			BindFinger(rootJointObject, middleJointObject, finalJointObject, fingerTag, useIK);
+			return BindFinger(rootJointObject, middleJointObject, finalJointObject, fingerTag, useIK);
 		}
 	}
-	return false;
+	return true;
 }
 
-bool BindHumanBody::BindFinger(MObject& rootJoint, MObject& middleJoint, MObject& finalJoint, MString fingerTag, bool useIK = false)
+bool BindHumanBody::BindFinger(MObject& rootJointObject, MObject& middleJointObject, MObject& finalJointObject, MString fingerTag, bool useIK)
 {
-	JointProcess::SetJointLimit(rootJoint, JointProcess::JointType::FingerRoot);
-	JointProcess::SetJointLimit(middleJoint, JointProcess::JointType::FingerMiddle);
-	JointProcess::SetJointLimit(finalJoint, JointProcess::JointType::FingerMiddle);
+	JointProcess::SetJointLimit(rootJointObject, JointProcess::JointType::FingerRoot);
+	JointProcess::SetJointLimit(middleJointObject, JointProcess::JointType::FingerMiddle);
+	JointProcess::SetJointLimit(finalJointObject, JointProcess::JointType::FingerMiddle);
 
 	if (useIK)
 	{
@@ -34,6 +34,15 @@ bool BindHumanBody::BindFinger(MObject& rootJoint, MObject& middleJoint, MObject
 	}
 	else
 	{
+		MObject ctlObject = BasicFunc::AddChildCircle(rootJointObject);
+		MString remapValueNodeName_root = BasicFunc::CreateRemapValueNode(-2, 3, 60, -90);
+		MString remapValueNodeName_rootSide = BasicFunc::CreateRemapValueNode(-1, 1, 30, -30);
+		MString	remapValueNodeName_middle = BasicFunc::CreateRemapValueNode(-1, 3, 30, -90);
+		MString	remapValueNodeName_final = BasicFunc::CreateRemapValueNode(-1, 3, 30, -90);
+		MString ctlName = MFnTransform(ctlObject).fullPathName();
+		MFnDependencyNode mdn(ctlObject);
+		MPlug plug_ty = mdn.findPlug("translateY");
+		
 
 	}
 
