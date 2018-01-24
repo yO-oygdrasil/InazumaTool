@@ -22,8 +22,8 @@ public:
 	static MObject GetSelectedObject(int index);
 	static MDagPath GetSelectedDagPath(int index);
 
-	static void PrintMVector(MVector vec);
-	static void Print(MString str);
+	//static void PrintMVector(MVector vec);
+	//static void Print(MString str);
 
 	static MSelectionList GetObjectsByName(MString name);
 	static MObject GetObjectByName(MString name, int index = 0);

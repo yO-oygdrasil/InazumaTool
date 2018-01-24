@@ -1,30 +1,16 @@
 #include "pluginMain.h"
 
-class TempClass : public MPxCommand
-{
-public:
-	MStatus doIt(const MArgList& args)
-	{
-		BasicFunc::Print("oooo");
-		//cout << "Hello oMaya " << args.asString(0).asChar() << endl;
-		return MS::kSuccess;
-	}
-	static void* creator()
-	{
-		//std::cout << "test ok" << endl;
-		return new TempClass;
-	}
-};
-
 
 MStatus initializePlugin(MObject obj)
 {
 	MFnPlugin plugin(obj, "InazumaTool", "beta", MApiVersion);
 
 	MString totalMenuName = GetMayaWindowName();
-	plugin.registerCommand("Print", TempClass::creator);
-
-	plugin.addMenuItem("test1", totalMenuName, "Print", "fuck all");
+	plugin.registerCommand("Print", MPCMap::creator);
+	MString paramStr;//never do [MString str = (int)], must be two line
+	//std::to_string((int)MPCMap::MPCType::BindFinger_CTL_L).c_str();
+	paramStr = (int)MPCMap::MPCType::BindFinger_CTL_L;
+	plugin.addMenuItem("test111", totalMenuName, "Print", paramStr);
 	return MStatus::kSuccess;
 }
 

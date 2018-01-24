@@ -57,16 +57,18 @@ MDagPath BasicFunc::GetSelectedDagPath(int index)
 
 
 
-void BasicFunc::PrintMVector(MVector vec)
-{
-	//may be not useful, mo le
+//void BasicFunc::PrintMVector(MVector vec)
+//{
+//	//may be not useful, mo le
+//
+//}
 
-}
-
-void BasicFunc::Print(MString str)
-{
-	MGlobal::executePythonCommand("print " + str);
-}
+//void BasicFunc::Print(MString str)
+//{
+//	MGlobal::displayInfo(str);
+//	//cout << str << endl;
+//	//MGlobal::executePythonCommand("print '" + str + "'");
+//}
 
 
 
