@@ -51,3 +51,36 @@ bool BindHumanBody::BindFinger(MObject& rootJointObject, MObject& middleJointObj
 
 	return true;
 }
+
+
+
+
+bool BindHumanBody::BindRPIK()
+{
+	MSelectionList selected;
+	MGlobal::getActiveSelectionList(selected);
+	if (selected.length() == 3)
+	{
+		MObject rootObject, endObject, ctlObject;
+		selected.getDependNode(0, rootObject);
+		selected.getDependNode(1, endObject);
+		selected.getDependNode(2, ctlObject);
+		BindRPIK(rootObject, endObject, ctlObject);
+	}
+
+
+
+	return false;
+}
+
+bool BindHumanBody::BindRPIK(MObject & rootObject, MObject & endObject, MObject & ctlObject)
+{
+
+
+
+
+
+
+
+	return false;
+}
