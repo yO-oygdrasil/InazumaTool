@@ -13,11 +13,18 @@
 static class BasicFunc
 {
 public:
+	
+
 	void SetTranslateLimit(MObject & mObject, float minX, float minY, float minZ, float maxX, float maxY, float maxZ);
 	void SetTranslateLimit(MFnTransform & mfnTrans, float minX, float minY, float minZ, float maxX, float maxY, float maxZ);
 
+	static MString ToCMDSParamStr(MVector vector);
+
+	static MString CreateLocator(MVector worldPos, MString locatorName = "loc_sample");
 	static MString CreateCTL_Crystal(MString ctlName = "ctl_sample");
 	static MString CreateRemapValueNode(float inputMin, float inputMax, float outputMin, float outputMax);
+
+
 
 	static MObject GetSelectedObject(int index);
 	static MDagPath GetSelectedDagPath(int index);
@@ -32,5 +39,9 @@ public:
 	static void SetTransformParent(MFnTransform& c, MFnTransform& p);
 	static void SetTransformParent(MString cFullName, MString pFullName);
 	static void FreezeTransform(MFnTransform& targetTransform);
+
+//private:
+//	static std::stringstream* strStream;
+//	static std::stringstream& SS();
 };
 

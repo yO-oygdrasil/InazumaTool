@@ -23,6 +23,17 @@ void BasicFunc::SetTranslateLimit(MFnTransform & mfnTrans, float minX, float min
 	mfnTrans.setLimit(MFnTransform::LimitType::kTranslateMaxZ, maxZ);
 }
 
+MString BasicFunc::ToCMDSParamStr(MVector vector)
+{
+	//char* resultStr;
+	MString result = "";
+	std::stringstream ss();
+	
+	result.format("(%f,%f,%f)", vector.x, vector.y, vector.z);
+	//sprintf(resultStr,"(%f,%f,%f)", vector.x, vector.y, vector.z);
+	return result;
+}
+
 MObject BasicFunc::GetSelectedObject(int index)
 {
 	MSelectionList selected;
@@ -54,21 +65,6 @@ MDagPath BasicFunc::GetSelectedDagPath(int index)
 	}
 	return dagPath;
 }
-
-
-
-//void BasicFunc::PrintMVector(MVector vec)
-//{
-//	//may be not useful, mo le
-//
-//}
-
-//void BasicFunc::Print(MString str)
-//{
-//	MGlobal::displayInfo(str);
-//	//cout << str << endl;
-//	//MGlobal::executePythonCommand("print '" + str + "'");
-//}
 
 
 
@@ -108,6 +104,14 @@ MObject BasicFunc::AddChildCircle(MObject& targetObject)
 	return circleObject;
 }
 
+MString BasicFunc::CreateLocator(MVector worldPos, MString locatorName)
+{
+	MString cmdStr = "cmds.spaceLocator(p=";
+	cmdStr += ToCMDSParamStr(worldPos);
+	cmdStr += (")");
+	return MGlobal::executePythonCommand(cmdStr);
+}
+
 MString BasicFunc::CreateCTL_Crystal(MString ctlName)
 {
 	return MGlobal::executePythonCommandStringResult("cmds.curve(n='" + ctlName + "', d=1,\
@@ -144,6 +148,7 @@ void BasicFunc::FreezeTransform(MFnTransform& targetTransform)
 {
 	MGlobal::executePythonCommand("cmds.makeIdentity(" + targetTransform.fullPathName() + ",apply=True");
 }
+
 
 
 

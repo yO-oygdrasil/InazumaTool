@@ -12,7 +12,7 @@ public:
 	bool BindFinger(MObject& rootJoint, MObject& middleJoint, MObject& finalJoint, MString fingerTag, bool useIK = false);
 	//bool BindFinger(MFnIkJoint& rootJoint, MFnIkJoint& middleJoint, MFnIkJoint& finalJoint, MString fingerTag, bool useIK = false);
 
-	void 
+	void AddRPIKPole(MObject& middleObject);
 
 	bool BindRPIK();
 	bool BindRPIK(MObject& rootObject, MObject& endObject, MObject& ctlObject);

@@ -55,6 +55,27 @@ bool BindHumanBody::BindFinger(MObject& rootJointObject, MObject& middleJointObj
 
 
 
+void BindHumanBody::AddRPIKPole(MObject & middleObject)
+{
+	MFnIkJoint middleJoint(middleObject);
+	if (middleJoint.parentCount() > 0)
+	{
+		MFnIkJoint rootJoint(middleJoint.parent(0));
+		if (middleJoint.childCount() > 0)
+		{
+			MFnIkJoint endJoint(middleJoint.child(0));
+			MVector rootPos = rootJoint.getTranslation(MSpace::kWorld);
+			MVector middlePos = middleJoint.getTranslation(MSpace::kWorld);
+			MVector endPos = endJoint.getTranslation(MSpace::kWorld);
+			float len0 = (middlePos - rootPos).length();
+			float len1 = (endPos - middlePos).length();
+			MVector polePos = (len0*rootPos + len1*endPos) / (len0 + len1);
+
+		}
+	}
+
+}
+
 bool BindHumanBody::BindRPIK()
 {
 	MSelectionList selected;
