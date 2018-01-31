@@ -25,12 +25,9 @@ void BasicFunc::SetTranslateLimit(MFnTransform & mfnTrans, float minX, float min
 
 MString BasicFunc::ToCMDSParamStr(MVector vector)
 {
-	//char* resultStr;
-	MString result = "";
-	std::stringstream ss();
-	
-	result.format("(%f,%f,%f)", vector.x, vector.y, vector.z);
-	//sprintf(resultStr,"(%f,%f,%f)", vector.x, vector.y, vector.z);
+	std::stringstream ss;
+	ss << "(" << vector.x << "," << vector.y << "," << vector.z << ")";
+	MString result = ss.str().c_str();
 	return result;
 }
 
@@ -109,7 +106,7 @@ MString BasicFunc::CreateLocator(MVector worldPos, MString locatorName)
 	MString cmdStr = "cmds.spaceLocator(p=";
 	cmdStr += ToCMDSParamStr(worldPos);
 	cmdStr += (")");
-	return MGlobal::executePythonCommand(cmdStr);
+	return MGlobal::executePythonCommandStringResult(cmdStr);
 }
 
 MString BasicFunc::CreateCTL_Crystal(MString ctlName)

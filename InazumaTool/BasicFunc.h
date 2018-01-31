@@ -10,6 +10,7 @@
 #include <maya/MPointArray.h>
 #include <maya/MEulerRotation.h>
 #include <maya/MPlug.h>
+#include <sstream>
 static class BasicFunc
 {
 public:
