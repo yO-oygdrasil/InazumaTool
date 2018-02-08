@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\Model">
+      <UniqueIdentifier>{d6dddf95-eaf7-4483-8d3a-eb124a59808b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicFunc.h">
@@ -24,12 +27,33 @@
     <ClInclude Include="pluginMain.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="JointProcess.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BindHumanBody.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MPxCommandMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicFunc.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="pluginMain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JointProcess.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantValue.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BindHumanBody.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MPxCommandMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
