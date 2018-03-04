@@ -135,7 +135,7 @@
     <ClInclude Include="BasicFunc.h" />
     <ClInclude Include="BindHumanBody.h" />
     <ClInclude Include="ConstantValue.h" />
-    <ClInclude Include="Cubater.h" />
+    <ClInclude Include="VertDataIO.h" />
     <ClInclude Include="JointProcess.h" />
     <ClInclude Include="MPxCommandMap.h" />
     <ClInclude Include="pluginMain.h" />
@@ -144,7 +144,7 @@
     <ClCompile Include="BasicFunc.cpp" />
     <ClCompile Include="BindHumanBody.cpp" />
     <ClCompile Include="ConstantValue.cpp" />
-    <ClCompile Include="Cubater.cpp" />
+    <ClCompile Include="VertDataIO.cpp" />
     <ClCompile Include="JointProcess.cpp" />
     <ClCompile Include="MPxCommandMap.cpp" />
     <ClCompile Include="pluginMain.cpp" />
