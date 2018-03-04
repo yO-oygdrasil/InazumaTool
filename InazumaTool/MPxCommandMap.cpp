@@ -22,15 +22,31 @@ MStatus MPCMap::doIt(const MArgList & args)
 	{
 		MPCType mpcType = (MPCType)type;
 
+
 		switch (mpcType)
 		{
 		case MPCType::Test:
 		{
 			MGlobal::displayInfo("oh my god it works");
+			MFnTransform selected(BasicFunc::GetSelectedDagPath(0));
+			MStatus success = MStatus();
+			MVector worldPos = selected.getTranslation(MSpace::kWorld, &success);
+			if (success == MStatus::kSuccess)
+			{
+				MGlobal::displayInfo("success");
+			}
+			else
+			{
+				MGlobal::displayInfo("failure");
+			}
+			//selected.setTranslation(worldPos, MSpace::kWorld);
+			MGlobal::displayInfo("selected object worldPos:" + BasicFunc::ToCMDSParamStr(worldPos));
+			MGlobal::displayInfo("hahaha");
 			break;
 		}
 		case MPCType::BindFinger_CTL_L:
 		{
+			BindHumanBody::AddRPIKPole();
 			MGlobal::displayInfo("oh my god it works222");
 			break;
 		}
@@ -41,12 +57,13 @@ MStatus MPCMap::doIt(const MArgList & args)
 		}
 		case MPCType::AddRPIK:
 		{
-			MGlobal::displayInfo("oh my god it works444");
+			MGlobal::displayInfo("the holy one has fallen");
 			break;
 		}
 		case MPCType::AddRPIKPole:
 		{
-			MGlobal::displayInfo("oh my god it works555");
+			BindHumanBody::AddRPIKPole();
+			MGlobal::displayInfo("add rpik pole loc");
 			break;
 		}
 

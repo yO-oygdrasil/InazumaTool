@@ -55,26 +55,68 @@ bool BindHumanBody::BindFinger(MObject& rootJointObject, MObject& middleJointObj
 
 
 
+void BindHumanBody::AddRPIKPole()
+{
+	MObject selected = BasicFunc::GetSelectedObject(0);
+	AddRPIKPole(selected);
+}
+
 void BindHumanBody::AddRPIKPole(MObject & middleObject)
 {
-	MFnIkJoint middleJoint(middleObject);
+	MDagPath rootDagPath, middleDagPath, endDagPath;
+	if (middleObject.hasFn(MFn::kDagNode))
+	{
+		MDagPath::getAPathTo(middleObject, middleDagPath);
+	}
+	
+	MFnIkJoint middleJoint(middleDagPath);
 	if (middleJoint.parentCount() > 0)
 	{
-		MFnIkJoint rootJoint(middleJoint.parent(0));
+		MDagPath::getAPathTo(middleJoint.parent(0), rootDagPath);
+		MFnIkJoint rootJoint(rootDagPath);		
 		if (middleJoint.childCount() > 0)
 		{
-			MFnIkJoint endJoint(middleJoint.child(0));
+			MDagPath::getAPathTo(middleJoint.child(0), endDagPath);
+			MFnIkJoint endJoint(endDagPath);
 			MVector rootPos = rootJoint.getTranslation(MSpace::kWorld);
 			MVector middlePos = middleJoint.getTranslation(MSpace::kWorld);
 			MVector endPos = endJoint.getTranslation(MSpace::kWorld);
+
 			float len0 = (middlePos - rootPos).length();
 			float len1 = (endPos - middlePos).length();
-			MVector polePos = (len0*rootPos + len1*endPos) / (len0 + len1);
+			MVector nmPos = (len0*rootPos + len1 * endPos) / (len0 + len1);
+			float factor = 2;
+			MVector polePos = factor * middlePos - nmPos;
 
+			//MGlobal::displayInfo("gogogo ");
+			MString locName = "loc_" + rootJoint.name() + "_" + endJoint.name();
+			//MGlobal::displayInfo(locName);
+			locName = BasicFunc::CreateLocator(polePos, locName);
+			//MFnTransform locTrans(BasicFunc::GetObjectByName(locName));
+			//BasicFunc::FreezeTransform(locTrans);
 		}
 	}
 
 }
+
+void BindHumanBody::AddRPIKPole(MDagPath & rootDagPath, MDagPath & middleDagPath, MDagPath & endDagPath)
+{
+	MFnTransform rootTrans(rootDagPath), middleTrans(middleDagPath), endTrans(endDagPath);
+	MVector rootPos = rootTrans.getTranslation(MSpace::kWorld);
+	MVector middlePos = middleTrans.getTranslation(MSpace::kWorld);
+	MVector endPos = endTrans.getTranslation(MSpace::kWorld);
+	float len0 = (middlePos - rootPos).length();
+	float len1 = (endPos - middlePos).length();
+	MVector polePos = (len0*rootPos + len1 * endPos) / (len0 + len1);
+	//MGlobal::displayInfo("gogogo ");
+	MString locName = "loc_" + rootTrans.name() + "_" + endTrans.name();
+	locName = BasicFunc::CreateLocator(polePos, locName);
+	MFnTransform locTrans(BasicFunc::GetObjectByName(locName));
+	BasicFunc::FreezeTransform(locTrans);
+
+}
+
+
 
 bool BindHumanBody::BindRPIK()
 {
@@ -82,10 +124,10 @@ bool BindHumanBody::BindRPIK()
 	MGlobal::getActiveSelectionList(selected);
 	if (selected.length() == 3)
 	{
-		MObject rootObject, endObject, ctlObject;
-		selected.getDependNode(0, rootObject);
-		selected.getDependNode(1, endObject);
-		selected.getDependNode(2, ctlObject);
+		MDagPath rootObject, endObject, ctlObject;
+		selected.getDagPath(0, rootObject);
+		selected.getDagPath(1, endObject);
+		selected.getDagPath(2, ctlObject);
 		BindRPIK(rootObject, endObject, ctlObject);
 	}
 
@@ -94,7 +136,7 @@ bool BindHumanBody::BindRPIK()
 	return false;
 }
 
-bool BindHumanBody::BindRPIK(MObject & rootObject, MObject & endObject, MObject & ctlObject)
+bool BindHumanBody::BindRPIK(MDagPath & rootObject, MDagPath & endObject, MDagPath & ctlObject)
 {
 
 

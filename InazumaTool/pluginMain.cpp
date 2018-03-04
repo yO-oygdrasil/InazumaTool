@@ -9,8 +9,12 @@ MStatus initializePlugin(MObject obj)
 	plugin.registerCommand("Print", MPCMap::creator);
 	MString paramStr;//never do [MString str = (int)], must be two line
 	//std::to_string((int)MPCMap::MPCType::BindFinger_CTL_L).c_str();
-	paramStr = (int)MPCMap::MPCType::BindFinger_CTL_L;
+	//int intValue = (int)MPCMap::MPCType::Test;
+	paramStr = MPCMap::MPCType::Test;
 	plugin.addMenuItem("test111", totalMenuName, "Print", paramStr);
+	paramStr = (int)MPCMap::MPCType::AddRPIKPole;
+	plugin.addMenuItem("add rpik pole", totalMenuName, "Print", paramStr);
+	
 	return MStatus::kSuccess;
 }
 

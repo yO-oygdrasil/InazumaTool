@@ -35,6 +35,8 @@ public:
 
 	static MSelectionList GetObjectsByName(MString name);
 	static MObject GetObjectByName(MString name, int index = 0);
+	static MDagPath GetDagPathByName(MString name, int index = 0);
+
 
 	static MObject AddChildCircle(MObject& targetObject);
 	static void SetTransformParent(MFnTransform& c, MFnTransform& p);

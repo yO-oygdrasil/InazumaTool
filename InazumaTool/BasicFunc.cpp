@@ -24,10 +24,16 @@ void BasicFunc::SetTranslateLimit(MFnTransform & mfnTrans, float minX, float min
 }
 
 MString BasicFunc::ToCMDSParamStr(MVector vector)
-{
-	std::stringstream ss;
-	ss << "(" << vector.x << "," << vector.y << "," << vector.z << ")";
-	MString result = ss.str().c_str();
+{	
+	MString temp;
+	temp = vector.x;
+	//MGlobal::displayInfo(temp);
+	char* str = new char[50];
+	sprintf_s(str, 50, "(%f,%f,%f)", vector.x, vector.y, vector.z);
+	//std::stringstream ss;
+	//ss << "(" << vector.x << "," << vector.y << "," << vector.z << ")";
+	MString result = str;// ss.str().c_str();
+	//MGlobal::displayInfo(result);
 	return result;
 }
 
@@ -77,7 +83,7 @@ MObject BasicFunc::GetObjectByName(MString name, int index)
 	MSelectionList matched = GetObjectsByName(name);
 	MObject mObject;
 	if (index < matched.length())
-	{
+	{		
 		matched.getDependNode(index, mObject);
 	}
 	else
@@ -85,6 +91,25 @@ MObject BasicFunc::GetObjectByName(MString name, int index)
 		mObject = MObject();
 	}
 	return mObject;
+}
+
+MDagPath BasicFunc::GetDagPathByName(MString name, int index)
+{
+	MSelectionList matched = GetObjectsByName(name);
+	MDagPath mDagPath;
+	if (index < matched.length())
+	{
+		MGlobal::displayInfo("alskdjf");
+		matched.getDagPath(index, mDagPath);
+	}
+	else
+	{
+		MString re = "aa";
+		re = matched.length();
+		MGlobal::displayInfo(name+" count:"+ re);
+		mDagPath = MDagPath();
+	}
+	return mDagPath;
 }
 
 MObject BasicFunc::AddChildCircle(MObject& targetObject)
@@ -103,10 +128,18 @@ MObject BasicFunc::AddChildCircle(MObject& targetObject)
 
 MString BasicFunc::CreateLocator(MVector worldPos, MString locatorName)
 {
-	MString cmdStr = "cmds.spaceLocator(p=";
-	cmdStr += ToCMDSParamStr(worldPos);
-	cmdStr += (")");
-	return MGlobal::executePythonCommandStringResult(cmdStr);
+	MString cmdStr = "cmds.spaceLocator(n='" + locatorName + "')";
+	//cmdStr += ToCMDSParamStr(worldPos);
+	//cmdStr += (")");
+	MGlobal::displayInfo(cmdStr);
+	//MGlobal::displayInfo(ToCMDSParamStr(worldPos));
+	locatorName = MGlobal::executePythonCommandStringResult(cmdStr);
+	MGlobal::displayInfo("realName:"+locatorName);
+	MDagPath locDagPath = BasicFunc::GetDagPathByName(locatorName);
+	MFnTransform locatorTrans(locDagPath);
+	MGlobal::displayInfo(locatorName+"dag:"+locDagPath.fullPathName());
+	locatorTrans.setTranslation(worldPos, MSpace::kWorld);
+	return locatorName;
 }
 
 MString BasicFunc::CreateCTL_Crystal(MString ctlName)

@@ -5,7 +5,7 @@
 #include "BasicFunc.h"
 #include <maya/MArgList.h>
 #include <sstream>
-
+#include "BindHumanBody.h"
 
 
 
