@@ -12,16 +12,17 @@ MString VertDataIO::ReadFromTextFile(MString filePath)
 	int vCount,lpv;
 	inFile >> vCount >> lpv;
 
-	VertDataIO vdi = 
+	VertData vdi = VertData(vCount, lpv);
 
 	//int currentVertIndex = 0;
-	for (int i = 0; i < vCount; i++)
+	std::string line;
+	/*for (int i = 0; i < vCount; i++)
 	{
 		for (int j = 0; j < lpv; j++)
 		{
-
+			vdi.SetVertData(i,j,)
 		}
-	}
+	}*/
 
 
 
