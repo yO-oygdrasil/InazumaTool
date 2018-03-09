@@ -75,6 +75,7 @@ MSelectionList BasicFunc::GetObjectsByName(MString name)
 {
 	MSelectionList matched;
 	MGlobal::getSelectionListByName(name, matched);
+	//MGlobal::displayInfo("ask if [" + name + "] exist,result count:" + matched.length());
 	return matched;
 }
 
@@ -95,18 +96,17 @@ MObject BasicFunc::GetObjectByName(MString name, int index)
 
 MDagPath BasicFunc::GetDagPathByName(MString name, int index)
 {
-	MSelectionList matched = GetObjectsByName(name);
+	MSelectionList matched = GetObjectsByName(name.asChar());
 	MDagPath mDagPath;
 	if (index < matched.length())
 	{
-		MGlobal::displayInfo("alskdjf");
 		matched.getDagPath(index, mDagPath);
 	}
 	else
 	{
-		MString re = "aa";
+		/*MString re = "aa";
 		re = matched.length();
-		MGlobal::displayInfo(name+" count:"+ re);
+		MGlobal::displayInfo(name+" count:"+ re);*/
 		mDagPath = MDagPath();
 	}
 	return mDagPath;
@@ -131,16 +131,18 @@ MString BasicFunc::CreateLocator(MVector worldPos, MString locatorName)
 	MString cmdStr = "cmds.spaceLocator(n='" + locatorName + "')";
 	//cmdStr += ToCMDSParamStr(worldPos);
 	//cmdStr += (")");
-	MGlobal::displayInfo(cmdStr);
+	//MGlobal::displayInfo(cmdStr);
 	//MGlobal::displayInfo(ToCMDSParamStr(worldPos));
-	locatorName = MGlobal::executePythonCommandStringResult(cmdStr);
-	MGlobal::displayInfo("realName:"+locatorName);
+	
+	locatorName = SubUShell(MGlobal::executePythonCommandStringResult(cmdStr));
 	MDagPath locDagPath = BasicFunc::GetDagPathByName(locatorName);
 	MFnTransform locatorTrans(locDagPath);
-	MGlobal::displayInfo(locatorName+"dag:"+locDagPath.fullPathName());
+	//MGlobal::displayInfo(locatorName+"dag:"+locDagPath.fullPathName());
 	locatorTrans.setTranslation(worldPos, MSpace::kWorld);
 	return locatorName;
 }
+
+
 
 MString BasicFunc::CreateCTL_Crystal(MString ctlName)
 {
@@ -163,6 +165,15 @@ MString BasicFunc::CreateRemapValueNode(float inputMin, float inputMax, float ou
 	return dependencyNode.absoluteName();
 }
 
+void BasicFunc::IterateChidren(int(*func)(MDagPath &), MDagPath & rootNode)
+{
+	/*if (rootNode != )
+	{
+		
+	}*/
+
+}
+
 
 void BasicFunc::SetTransformParent(MFnTransform& c, MFnTransform& p)
 {	
@@ -177,6 +188,14 @@ void BasicFunc::SetTransformParent(MString cFullName, MString pFullName)
 void BasicFunc::FreezeTransform(MFnTransform& targetTransform)
 {
 	MGlobal::executePythonCommand("cmds.makeIdentity(" + targetTransform.fullPathName() + ",apply=True");
+}
+
+MString BasicFunc::SubUShell(MString originStr)
+{
+	originStr.substitute("[u'", "");
+	originStr.substitute("']", "");
+	originStr.asUTF8();
+	return originStr;
 }
 
 

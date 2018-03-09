@@ -3,6 +3,7 @@
 #include <maya/MFnIkJoint.h>
 #include <maya/MFnTransform.h>
 #include <maya/MPlug.h>
+#include <maya/MFnIkHandle.h>
 #include "JointProcess.h"
 #include "BasicFunc.h"
 static class BindHumanBody

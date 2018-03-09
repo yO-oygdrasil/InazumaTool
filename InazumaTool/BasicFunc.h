@@ -25,7 +25,7 @@ public:
 	static MString CreateCTL_Crystal(MString ctlName = "ctl_sample");
 	static MString CreateRemapValueNode(float inputMin, float inputMax, float outputMin, float outputMax);
 
-
+	static void IterateChidren(int(*func)(MDagPath&),MDagPath& rootNode);
 
 	static MObject GetSelectedObject(int index);
 	static MDagPath GetSelectedDagPath(int index);
@@ -42,6 +42,8 @@ public:
 	static void SetTransformParent(MFnTransform& c, MFnTransform& p);
 	static void SetTransformParent(MString cFullName, MString pFullName);
 	static void FreezeTransform(MFnTransform& targetTransform);
+
+	static MString SubUShell(MString originStr);
 
 //private:
 //	static std::stringstream* strStream;

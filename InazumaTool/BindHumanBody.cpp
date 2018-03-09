@@ -128,12 +128,12 @@ bool BindHumanBody::BindRPIK()
 		selected.getDagPath(0, rootObject);
 		selected.getDagPath(1, endObject);
 		selected.getDagPath(2, ctlObject);
-		BindRPIK(rootObject, endObject, ctlObject);
+		return BindRPIK(rootObject, endObject, ctlObject);
 	}
-
-
-
-	return false;
+	else
+	{
+		return false;
+	}
 }
 
 bool BindHumanBody::BindRPIK(MDagPath & rootObject, MDagPath & endObject, MDagPath & ctlObject)
