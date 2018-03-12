@@ -10,7 +10,7 @@ MStatus initializePlugin(MObject obj)
 	MString paramStr;//never do [MString str = (int)], must be two line
 	//std::to_string((int)MPCMap::MPCType::BindFinger_CTL_L).c_str();
 	//int intValue = (int)MPCMap::MPCType::Test;
-	paramStr = MPCMap::MPCType::Test;
+	paramStr = MPCMap::MPCType::AddRPIK;
 	plugin.addMenuItem("test111", totalMenuName, "Print", paramStr);
 	paramStr = (int)MPCMap::MPCType::AddRPIKPole;
 	plugin.addMenuItem("add rpik pole", totalMenuName, "Print", paramStr);

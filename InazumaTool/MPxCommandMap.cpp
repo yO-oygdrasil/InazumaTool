@@ -58,6 +58,7 @@ MStatus MPCMap::doIt(const MArgList & args)
 		case MPCType::AddRPIK:
 		{
 			MGlobal::displayInfo("the holy one has fallen");
+			BindHumanBody::BindRPIK();
 			break;
 		}
 		case MPCType::AddRPIKPole:

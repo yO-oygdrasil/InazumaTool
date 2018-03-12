@@ -138,11 +138,18 @@ bool BindHumanBody::BindRPIK()
 
 bool BindHumanBody::BindRPIK(MDagPath & rootObject, MDagPath & endObject, MDagPath & ctlObject)
 {
-
-
-
-
-
+	MFnIkHandle* ikHandle = new MFnIkHandle;
+	MStatus status;
+	ikHandle->create(rootObject, endObject, &status);
+	
+	if (status == MStatus::kSuccess)
+	{
+		MGlobal::displayInfo("successsssssss" + ikHandle->name());
+	}
+	ikHandle->findPlug("");
+	MFnIkSolver solver(ikHandle->solver());
+	//solver
+	MGlobal::executeCommandStringResult(ikHandle - sj joint1 - ee joint4)
 
 
 	return false;
