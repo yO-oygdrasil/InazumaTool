@@ -149,7 +149,7 @@ bool BindHumanBody::BindRPIK(MDagPath & rootObject, MDagPath & endObject, MDagPa
 	ikHandle->findPlug("");
 	MFnIkSolver solver(ikHandle->solver());
 	//solver
-	MGlobal::executeCommandStringResult(ikHandle - sj joint1 - ee joint4)
+	MGlobal::executeCommandStringResult("ikHandle - sj joint1 - ee joint4")
 
 
 	return false;
