@@ -14,9 +14,9 @@ public:
 	static bool BindFinger(MObject& rootJoint, MObject& middleJoint, MObject& finalJoint, MString fingerTag, bool useIK = false);
 	//bool BindFinger(MFnIkJoint& rootJoint, MFnIkJoint& middleJoint, MFnIkJoint& finalJoint, MString fingerTag, bool useIK = false);
 
-	static void AddRPIKPole();
-	static void AddRPIKPole(MObject& middleObject);
-	static void AddRPIKPole(MDagPath& rootDagPath, MDagPath& middleDagPath, MDagPath& endDagPath);
+	static bool AddRPIKPole(MDagPath& locDagPath);
+	static bool AddRPIKPole(MDagPath& locDagPath, MObject& middleObject);
+	static bool AddRPIKPole(MDagPath& locDagPath, MDagPath& middleDagPath);
 
 	static bool BindRPIK();
 	static bool BindRPIK(MDagPath& rootObject, MDagPath& endObject, MDagPath& ctlObject);

@@ -42,38 +42,38 @@ bool BindHumanBody::BindFinger(MObject& rootJointObject, MObject& middleJointObj
 		MString ctlName = MFnTransform(ctlObject).fullPathName();
 		MFnDependencyNode mdn(ctlObject);
 		MPlug plug_ty = mdn.findPlug("translateY");
-		
 
 	}
-
-
-
-
 	return true;
 }
 
 
 
 
-void BindHumanBody::AddRPIKPole()
+bool BindHumanBody::AddRPIKPole(MDagPath& locDagPath)
 {
 	MObject selected = BasicFunc::GetSelectedObject(0);
-	AddRPIKPole(selected);
+	return AddRPIKPole(locDagPath,selected);
 }
 
-void BindHumanBody::AddRPIKPole(MObject & middleObject)
+bool BindHumanBody::AddRPIKPole(MDagPath& locDagPath, MObject & middleObject)
 {
-	MDagPath rootDagPath, middleDagPath, endDagPath;
+	MDagPath middleDagPath;
 	if (middleObject.hasFn(MFn::kDagNode))
 	{
 		MDagPath::getAPathTo(middleObject, middleDagPath);
 	}
-	
+	return AddRPIKPole(locDagPath, middleDagPath);
+}
+
+bool BindHumanBody::AddRPIKPole(MDagPath & locDagPath, MDagPath & middleDagPath)
+{
+	MDagPath rootDagPath, endDagPath;
 	MFnIkJoint middleJoint(middleDagPath);
 	if (middleJoint.parentCount() > 0)
 	{
 		MDagPath::getAPathTo(middleJoint.parent(0), rootDagPath);
-		MFnIkJoint rootJoint(rootDagPath);		
+		MFnIkJoint rootJoint(rootDagPath);
 		if (middleJoint.childCount() > 0)
 		{
 			MDagPath::getAPathTo(middleJoint.child(0), endDagPath);
@@ -88,33 +88,15 @@ void BindHumanBody::AddRPIKPole(MObject & middleObject)
 			float factor = 2;
 			MVector polePos = factor * middlePos - nmPos;
 
-			//MGlobal::displayInfo("gogogo ");
 			MString locName = "loc_" + rootJoint.name() + "_" + endJoint.name();
-			//MGlobal::displayInfo(locName);
-			locName = BasicFunc::CreateLocator(polePos, locName);
-			//MFnTransform locTrans(BasicFunc::GetObjectByName(locName));
-			//BasicFunc::FreezeTransform(locTrans);
+			return BasicFunc::CreateLocator(locDagPath, polePos, locName);
 		}
 	}
-
+	return false;
 }
 
-void BindHumanBody::AddRPIKPole(MDagPath & rootDagPath, MDagPath & middleDagPath, MDagPath & endDagPath)
-{
-	MFnTransform rootTrans(rootDagPath), middleTrans(middleDagPath), endTrans(endDagPath);
-	MVector rootPos = rootTrans.getTranslation(MSpace::kWorld);
-	MVector middlePos = middleTrans.getTranslation(MSpace::kWorld);
-	MVector endPos = endTrans.getTranslation(MSpace::kWorld);
-	float len0 = (middlePos - rootPos).length();
-	float len1 = (endPos - middlePos).length();
-	MVector polePos = (len0*rootPos + len1 * endPos) / (len0 + len1);
-	//MGlobal::displayInfo("gogogo ");
-	MString locName = "loc_" + rootTrans.name() + "_" + endTrans.name();
-	locName = BasicFunc::CreateLocator(polePos, locName);
-	MFnTransform locTrans(BasicFunc::GetObjectByName(locName));
-	BasicFunc::FreezeTransform(locTrans);
 
-}
+
 
 
 
@@ -138,7 +120,7 @@ bool BindHumanBody::BindRPIK()
 
 bool BindHumanBody::BindRPIK(MDagPath & rootObject, MDagPath & endObject, MDagPath & ctlObject)
 {
-	MFnIkHandle* ikHandle = new MFnIkHandle;
+	/*MFnIkHandle* ikHandle = new MFnIkHandle;
 	MStatus status;
 	ikHandle->create(rootObject, endObject, &status);
 	
@@ -147,10 +129,20 @@ bool BindHumanBody::BindRPIK(MDagPath & rootObject, MDagPath & endObject, MDagPa
 		MGlobal::displayInfo("successsssssss" + ikHandle->name());
 	}
 	ikHandle->findPlug("");
-	MFnIkSolver solver(ikHandle->solver());
+	MFnIkSolver solver(ikHandle->solver());*/
 	//solver
-	MGlobal::executeCommandStringResult("ikHandle - sj joint1 - ee joint4")
+	MString resultStr = MGlobal::executeCommandStringResult("ikHandle -sj" + rootObject.fullPathName() + " -ee " + endObject.fullPathName() + " -sol ikRPsolver -n ik_" + rootObject.partialPathName() + "_" + endObject.partialPathName());
+	
+	
+	MDagPath middleObject = MDagPath::getAPathTo(rootObject.child(0));
+	MDagPath locDagPath;
+	if (AddRPIKPole(locDagPath, middleObject))
+	{
 
-
-	return false;
+	}
+	
+	
+	return true;
 }
+
+

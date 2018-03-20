@@ -11,7 +11,7 @@ MString VertDataIO::ReadFromTextFile(MString filePath)
 	}
 	int vCount,lpv;
 	inFile >> vCount >> lpv;
-
+	MGlobal::displayInfo(vCount + "," + lpv);
 	VertData vdi = VertData(vCount, lpv);
 
 	//int currentVertIndex = 0;

@@ -126,7 +126,7 @@ MObject BasicFunc::AddChildCircle(MObject& targetObject)
 	return circleObject;
 }
 
-MString BasicFunc::CreateLocator(MVector worldPos, MString locatorName)
+bool BasicFunc::CreateLocator(MDagPath& locDagPath,MVector worldPos, MString locatorName)
 {
 	MString cmdStr = "cmds.spaceLocator(n='" + locatorName + "')";
 	//cmdStr += ToCMDSParamStr(worldPos);
@@ -135,11 +135,11 @@ MString BasicFunc::CreateLocator(MVector worldPos, MString locatorName)
 	//MGlobal::displayInfo(ToCMDSParamStr(worldPos));
 	
 	locatorName = SubUShell(MGlobal::executePythonCommandStringResult(cmdStr));
-	MDagPath locDagPath = BasicFunc::GetDagPathByName(locatorName);
+	locDagPath = BasicFunc::GetDagPathByName(locatorName);
 	MFnTransform locatorTrans(locDagPath);
 	//MGlobal::displayInfo(locatorName+"dag:"+locDagPath.fullPathName());
 	locatorTrans.setTranslation(worldPos, MSpace::kWorld);
-	return locatorName;
+	return true;
 }
 
 

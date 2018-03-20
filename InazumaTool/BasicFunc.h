@@ -21,7 +21,7 @@ public:
 
 	static MString ToCMDSParamStr(MVector vector);
 
-	static MString CreateLocator(MVector worldPos, MString locatorName = "loc_sample");
+	static bool CreateLocator(MDagPath& locDagPath, MVector worldPos, MString locatorName = "loc_sample");
 	static MString CreateCTL_Crystal(MString ctlName = "ctl_sample");
 	static MString CreateRemapValueNode(float inputMin, float inputMax, float outputMin, float outputMax);
 
