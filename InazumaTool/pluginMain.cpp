@@ -6,14 +6,14 @@ MStatus initializePlugin(MObject obj)
 	MFnPlugin plugin(obj, "InazumaTool", "beta", MApiVersion);
 
 	MString totalMenuName = GetMayaWindowName();
-	plugin.registerCommand("Print", MPCMap::creator);
+	plugin.registerCommand("InazumaCommand", MPCMap::creator);
 	MString paramStr;//never do [MString str = (int)], must be two line
 	//std::to_string((int)MPCMap::MPCType::BindFinger_CTL_L).c_str();
 	//int intValue = (int)MPCMap::MPCType::Test;
 	paramStr = MPCMap::MPCType::AddRPIK;
-	plugin.addMenuItem("test111", totalMenuName, "Print", paramStr);
+	plugin.addMenuItem("add rpik", totalMenuName, "InazumaCommand", paramStr);
 	paramStr = (int)MPCMap::MPCType::AddRPIKPole;
-	plugin.addMenuItem("add rpik pole", totalMenuName, "Print", paramStr);
+	plugin.addMenuItem("add rpik pole", totalMenuName, "InazumaCommand", paramStr);
 	
 	return MStatus::kSuccess;
 }

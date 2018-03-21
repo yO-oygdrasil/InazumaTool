@@ -10,6 +10,7 @@
 #include <maya/MPointArray.h>
 #include <maya/MEulerRotation.h>
 #include <maya/MPlug.h>
+#include <maya/MStringArray.h>
 #include <sstream>
 static class BasicFunc
 {
@@ -44,6 +45,7 @@ public:
 	static void FreezeTransform(MFnTransform& targetTransform);
 
 	static MString SubUShell(MString originStr);
+	static MStringArray SplitPythonResultStr(MString pythonStr);
 
 //private:
 //	static std::stringstream* strStream;

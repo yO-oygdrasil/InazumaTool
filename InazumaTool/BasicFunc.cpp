@@ -193,9 +193,24 @@ void BasicFunc::FreezeTransform(MFnTransform& targetTransform)
 MString BasicFunc::SubUShell(MString originStr)
 {
 	originStr.substitute("[u'", "");
+	originStr.substitute("u'", "");
 	originStr.substitute("']", "");
+	originStr.substitute("'", "");
+	originStr.substitute(" ", "");
 	originStr.asUTF8();
 	return originStr;
+}
+
+MStringArray BasicFunc::SplitPythonResultStr(MString pythonStr)
+{
+	//MGlobal::displayInfo("origin:" + pythonStr);
+	MStringArray msa;
+	pythonStr.split(',', msa);
+	for (int i = 0; i < msa.length(); i++)
+	{
+		msa[i] = SubUShell(msa[i]);
+	}
+	return msa;
 }
 
 

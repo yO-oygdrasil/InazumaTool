@@ -46,7 +46,6 @@ MStatus MPCMap::doIt(const MArgList & args)
 		}
 		case MPCType::BindFinger_CTL_L:
 		{
-			BindHumanBody::AddRPIKPole();
 			MGlobal::displayInfo("oh my god it works222");
 			break;
 		}
@@ -57,13 +56,13 @@ MStatus MPCMap::doIt(const MArgList & args)
 		}
 		case MPCType::AddRPIK:
 		{
-			MGlobal::displayInfo("the holy one has fallen");
 			BindHumanBody::BindRPIK();
 			break;
 		}
 		case MPCType::AddRPIKPole:
 		{
-			BindHumanBody::AddRPIKPole();
+			MDagPath locDagPath;
+			BindHumanBody::AddRPIKPole(locDagPath);
 			MGlobal::displayInfo("add rpik pole loc");
 			break;
 		}
