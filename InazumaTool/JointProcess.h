@@ -18,6 +18,7 @@ public:
 		Default
 	};
 
+	static bool SetJointLimit(MDagPath& mDagPath, JointType jointType);
 	static bool SetJointLimit(MObject& mobject, JointType jointType);
 	static bool SetJointLimit(MFnTransform& mfnTrans, JointType jointType);
 private:

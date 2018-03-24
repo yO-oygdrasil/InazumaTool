@@ -66,6 +66,16 @@ MStatus MPCMap::doIt(const MArgList & args)
 			MGlobal::displayInfo("add rpik pole loc");
 			break;
 		}
+		case MPCType::AddChildCtl:
+		{
+			BasicFunc::AddChildCircle(BasicFunc::GetSelectedDagPath(0));
+			break;
+		}
+		case MPCType::CreateCTL_CrysTal:
+		{
+			BasicFunc::CreateCTL_Crystal("ctl_sample");
+			break;
+		}
 
 		}
 	}

@@ -112,19 +112,43 @@ MDagPath BasicFunc::GetDagPathByName(MString name, int index)
 	return mDagPath;
 }
 
-MObject BasicFunc::AddChildCircle(MObject& targetObject)
+
+
+MDagPath BasicFunc::AddChildCircle(MObject & targetObject)
 {
-	MFnTransform targetTransform(targetObject);
-	MString ctlName = "ctl_" + targetTransform.name();
-	ctlName = BasicFunc::CreateCTL_Crystal(ctlName);
-	SetTransformParent(ctlName, targetTransform.fullPathName());
-	MObject circleObject = BasicFunc::GetObjectByName(ctlName);
-	MFnTransform circleTransform(circleObject);
+	if (targetObject.hasFn(MFn::kTransform))
+	{
+		return AddChildCircle(MDagPath::getAPathTo(targetObject));
+	}
+	else
+	{
+		return MDagPath();
+	}
+}
+
+MDagPath BasicFunc::AddChildCircle(MDagPath& targetDagPath)
+{
+	MString ctlName = "ctl_" + targetDagPath.partialPathName();
+	MDagPath ctlDagPath = BasicFunc::CreateCircle(ctlName);
+	ctlName = ctlDagPath.fullPathName();
+	SetTransformParent(ctlName, targetDagPath.fullPathName());
+	MFnTransform circleTransform(ctlDagPath);
 	circleTransform.setTranslation(MVector(0, 0, 0), MSpace::kObject);
 	circleTransform.setRotation(MEulerRotation(0, 90 / ConstantValue::DPR, 0));
 	FreezeTransform(circleTransform);
-	return circleObject;
+	return ctlDagPath;
 }
+
+MDagPath BasicFunc::AddParentCircle(MObject & targetObject)
+{
+	return MDagPath();
+}
+
+MDagPath BasicFunc::AddParentCircle(MDagPath & targetDagPath)
+{
+	return MDagPath();
+}
+
 
 bool BasicFunc::CreateLocator(MDagPath& locDagPath,MVector worldPos, MString locatorName)
 {
@@ -142,16 +166,34 @@ bool BasicFunc::CreateLocator(MDagPath& locDagPath,MVector worldPos, MString loc
 	return true;
 }
 
-
-
-MString BasicFunc::CreateCTL_Crystal(MString ctlName)
+MDagPath BasicFunc::CreateCircle(MString ctlName)
 {
-	return MGlobal::executePythonCommandStringResult("cmds.curve(n='" + ctlName + "', d=1,\
+	MStatus status;
+	MString resultStr = MGlobal::executePythonCommandStringResult("cmds.circle(n='" + ctlName + "')", &status);
+	if (status == MStatus::kSuccess)
+	{
+		MStringArray msa = SplitPythonResultStr(resultStr);
+		return GetDagPathByName(msa[0]);
+	}
+	else
+	{
+		return MDagPath();
+	}
+		
+}
+
+
+MDagPath BasicFunc::CreateCTL_Crystal(MString ctlName)
+{
+	MString resultName = MGlobal::executePythonCommandStringResult("cmds.curve(n='" + ctlName + "', d=1,\
                    p=[(0, 1, 0), (0, 0, 1), (1, 0, 0), (0, -1, 0), (0, 0, -1),\
                       (1, 0, 0), (0, 1, 0), (0, 0, -1),(-1, 0, 0), (0, -1, 0), \
                       (0, 0, 1), (-1, 0, 0), (0, 1, 0)],\
                    k=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])");
-
+	//MGlobal::displayInfo("circleName_BeforeSub:" + resultName);
+	//resultName = SubUShell(resultName);
+	//MGlobal::displayInfo("circleName_AfterSub:" + resultName);
+	return GetDagPathByName(resultName);
 }
 
 MString BasicFunc::CreateRemapValueNode(float inputMin, float inputMax, float outputMin, float outputMax)
@@ -182,7 +224,8 @@ void BasicFunc::SetTransformParent(MFnTransform& c, MFnTransform& p)
 
 void BasicFunc::SetTransformParent(MString cFullName, MString pFullName)
 {
-	MGlobal::executePythonCommand("cmds.parent(" + cFullName + "," + pFullName + "))");
+	
+	MGlobal::executePythonCommand("cmds.parent('" + cFullName + "','" + pFullName + "')",true);
 }
 
 void BasicFunc::FreezeTransform(MFnTransform& targetTransform)

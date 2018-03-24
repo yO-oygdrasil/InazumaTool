@@ -23,7 +23,8 @@ public:
 	static MString ToCMDSParamStr(MVector vector);
 
 	static bool CreateLocator(MDagPath& locDagPath, MVector worldPos, MString locatorName = "loc_sample");
-	static MString CreateCTL_Crystal(MString ctlName = "ctl_sample");
+	static MDagPath CreateCircle(MString ctlName = "circle_sample");
+	static MDagPath CreateCTL_Crystal(MString ctlName = "ctl_sample");
 	static MString CreateRemapValueNode(float inputMin, float inputMax, float outputMin, float outputMax);
 
 	static void IterateChidren(int(*func)(MDagPath&),MDagPath& rootNode);
@@ -38,8 +39,13 @@ public:
 	static MObject GetObjectByName(MString name, int index = 0);
 	static MDagPath GetDagPathByName(MString name, int index = 0);
 
+	static MDagPath AddChildCircle(MObject& targetObject);
+	static MDagPath AddChildCircle(MDagPath& targetDagPath);
+	static MDagPath AddParentCircle(MObject& targetObject);
+	static MDagPath AddParentCircle(MDagPath& targetDagPath);
 
-	static MObject AddChildCircle(MObject& targetObject);
+
+
 	static void SetTransformParent(MFnTransform& c, MFnTransform& p);
 	static void SetTransformParent(MString cFullName, MString pFullName);
 	static void FreezeTransform(MFnTransform& targetTransform);

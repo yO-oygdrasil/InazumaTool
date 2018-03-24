@@ -14,7 +14,10 @@ MStatus initializePlugin(MObject obj)
 	plugin.addMenuItem("add rpik", totalMenuName, "InazumaCommand", paramStr);
 	paramStr = (int)MPCMap::MPCType::AddRPIKPole;
 	plugin.addMenuItem("add rpik pole", totalMenuName, "InazumaCommand", paramStr);
-	
+	paramStr = MPCMap::MPCType::CreateCTL_CrysTal;
+	plugin.addMenuItem("create cystal ctl", totalMenuName, "InazumaCommand", paramStr);
+	paramStr = MPCMap::MPCType::AddChildCtl;
+	plugin.addMenuItem("add child ctl", totalMenuName, "InazumaCommand", paramStr);
 	return MStatus::kSuccess;
 }
 

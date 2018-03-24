@@ -34,13 +34,13 @@ bool BindHumanBody::BindFinger(MObject& rootJointObject, MObject& middleJointObj
 	}
 	else
 	{
-		MObject ctlObject = BasicFunc::AddChildCircle(rootJointObject);
+		MDagPath ctlDagPath = BasicFunc::AddChildCircle(rootJointObject);
 		MString remapValueNodeName_root = BasicFunc::CreateRemapValueNode(-2, 3, 60, -90);
 		MString remapValueNodeName_rootSide = BasicFunc::CreateRemapValueNode(-1, 1, 30, -30);
 		MString	remapValueNodeName_middle = BasicFunc::CreateRemapValueNode(-1, 3, 30, -90);
 		MString	remapValueNodeName_final = BasicFunc::CreateRemapValueNode(-1, 3, 30, -90);
-		MString ctlName = MFnTransform(ctlObject).fullPathName();
-		MFnDependencyNode mdn(ctlObject);
+		MString ctlName = ctlDagPath.fullPathName();
+		MFnDependencyNode mdn(ctlDagPath.node());
 		MPlug plug_ty = mdn.findPlug("translateY");
 
 	}

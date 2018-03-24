@@ -28,6 +28,11 @@ bool JointProcess::SetLimit(MFnTransform & mfnTrans, float rxMin, float ryMin, f
 	return true;
 }
 
+bool JointProcess::SetJointLimit(MDagPath & mDagPath, JointType jointType)
+{
+	return SetJointLimit(MFnTransform(mDagPath), jointType);
+}
+
 bool JointProcess::SetJointLimit(MObject & mobject, JointType jointType)
 {
 	if (mobject.hasFn(MFn::kTransform))

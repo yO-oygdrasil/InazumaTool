@@ -20,7 +20,9 @@ public:
 		BindFinger_CTL_L = 1,
 		BindFinger_CTL_R = 2,
 		AddRPIK = 3,
-		AddRPIKPole = 4
+		AddRPIKPole = 4,
+		AddChildCtl = 5,
+		CreateCTL_CrysTal = 6
 	};
 	MStatus doIt(const MArgList& args); 
 	static void* creator(); 
