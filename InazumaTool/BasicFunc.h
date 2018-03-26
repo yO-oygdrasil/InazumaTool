@@ -48,6 +48,8 @@ public:
 
 	static void SetTransformParent(MFnTransform& c, MFnTransform& p);
 	static void SetTransformParent(MString cFullName, MString pFullName);
+	static void UnparentTransform(MDagPath& dagPath);
+	static void UnparentTransform(MFnTransform& mfnTrans);
 	static void FreezeTransform(MFnTransform& targetTransform);
 
 	static MString SubUShell(MString originStr);

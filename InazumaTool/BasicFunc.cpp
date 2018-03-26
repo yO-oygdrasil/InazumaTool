@@ -228,9 +228,19 @@ void BasicFunc::SetTransformParent(MString cFullName, MString pFullName)
 	MGlobal::executePythonCommand("cmds.parent('" + cFullName + "','" + pFullName + "')",true);
 }
 
-void BasicFunc::FreezeTransform(MFnTransform& targetTransform)
+void BasicFunc::UnparentTransform(MDagPath & dagPath)
 {
-	MGlobal::executePythonCommand("cmds.makeIdentity(" + targetTransform.fullPathName() + ",apply=True");
+	MGlobal::executeCommand("parent -w " + dagPath.fullPathName());
+}
+
+void BasicFunc::UnparentTransform(MFnTransform & mfnTrans)
+{
+	MGlobal::executeCommand("parent -w " + mfnTrans.fullPathName());
+}
+
+void BasicFunc::FreezeTransform(MFnTransform& targetTransform)
+{	
+	MGlobal::executePythonCommand("cmds.makeIdentity('" + targetTransform.fullPathName() + "',apply=True)", true);
 }
 
 MString BasicFunc::SubUShell(MString originStr)

@@ -37,11 +37,13 @@ MStatus uninitializePlugin(MObject obj)
 	
 	MString menus = MGlobal::executePythonCommandStringResult("cmds.window(mel.eval('$temp1=$gMainWindow'), q=True, menuArray=True)");
 	//BasicFunc::Print(menus);
+	menus.substituteFirst("[", "");
+	menus.substitute("]", "");
 	MStringArray menuNames;
 	menus.split(',', menuNames);
 	for (int i = 0; i < menuNames.length(); i++)
 	{
-		//BasicFunc::Print(menuNames[i]);
+		//BasicFunc::Print(menuNames[i]); 
 		MString labelName = MGlobal::executePythonCommandStringResult("cmds.menu(" + menuNames[i] + ",q=True,label=True)");
 		if (labelName == "InazumaTool")
 		{

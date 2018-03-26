@@ -112,13 +112,27 @@ bool BindHumanBody::BindRPIK()
 		selected.getDagPath(2, ctlObject);
 		return BindRPIK(rootObject, endObject, ctlObject);
 	}
+	else if (selected.length() == 2)
+	{
+		MDagPath rootObject, endObject;
+		selected.getDagPath(0, rootObject);
+		selected.getDagPath(1, endObject);
+		return BindRPIK(rootObject, endObject);
+	}
 	else
 	{
 		return false;
 	}
 }
 
-bool BindHumanBody::BindRPIK(MDagPath & rootObject, MDagPath & endObject, MDagPath & ctlObject)
+bool BindHumanBody::BindRPIK(MDagPath & rootDagPath, MDagPath & endDagPath)
+{
+	MDagPath ctlDagPath = BasicFunc::AddChildCircle(endDagPath);
+	BasicFunc::UnparentTransform(ctlDagPath);
+	return BindRPIK(rootDagPath, endDagPath, ctlDagPath);
+}
+
+bool BindHumanBody::BindRPIK(MDagPath & rootDagPath, MDagPath & endDagPath, MDagPath & ctlDagPath)
 {
 	/*MFnIkHandle* ikHandle = new MFnIkHandle;
 	MStatus status;
@@ -133,24 +147,25 @@ bool BindHumanBody::BindRPIK(MDagPath & rootObject, MDagPath & endObject, MDagPa
 	//solver
 
 	//MString resultStr = MGlobal::executeCommandStringResult("ikHandle -sj " + rootObject.fullPathName() + " -ee " + endObject.fullPathName() + " -sol ikRPsolver -n ik_" + rootObject.partialPathName() + "_" + endObject.partialPathName(),true);
-	MString resultStr = MGlobal::executePythonCommandStringResult("cmds.ikHandle(sj='" + rootObject.fullPathName() + "',ee='" + endObject.fullPathName() + "',sol='ikRPsolver',n='ik_" + rootObject.partialPathName() + "_" + endObject.partialPathName() + "')");
+	MString resultStr = MGlobal::executePythonCommandStringResult("cmds.ikHandle(sj='" + rootDagPath.fullPathName() + "',ee='" + endDagPath.fullPathName() + "',sol='ikRPsolver',n='ik_" + rootDagPath.partialPathName() + "_" + endDagPath.partialPathName() + "')");
 	
 	//[u'ik_joint1_joint4', u'effector1']
 	MStringArray msa = BasicFunc::SplitPythonResultStr(resultStr);
 	//MGlobal::displayInfo(resultStr);
-	for (int i = 0; i < msa.length(); i++)
+	/*for (int i = 0; i < msa.length(); i++)
 	{
 		MGlobal::displayInfo(msa[i]);
-	}
+	}*/
 
-
-	MDagPath middleObject = MDagPath::getAPathTo(rootObject.child(0));
+	MDagPath middleObject = MDagPath::getAPathTo(rootDagPath.child(0));
 	MDagPath locDagPath;
 	if (AddRPIKPole(locDagPath, middleObject))
 	{
 		//begin to add constriant
 		MString poleConstraintResult = MGlobal::executeCommandStringResult("poleVectorConstraint " + locDagPath.fullPathName() + " " + msa[0]);
-		MGlobal::displayInfo(poleConstraintResult);
+		//MGlobal::displayInfo(poleConstraintResult);
+		MGlobal::executeCommandStringResult("pointConstraint " + ctlDagPath.fullPathName() + " " + msa[0]);
+
 	}
 	
 	

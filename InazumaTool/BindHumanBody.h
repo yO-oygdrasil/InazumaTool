@@ -19,6 +19,7 @@ public:
 	static bool AddRPIKPole(MDagPath& locDagPath, MDagPath& middleDagPath);
 
 	static bool BindRPIK();
-	static bool BindRPIK(MDagPath& rootObject, MDagPath& endObject, MDagPath& ctlObject);
+	static bool BindRPIK(MDagPath& rootDagPath, MDagPath& endDagPath);
+	static bool BindRPIK(MDagPath& rootDagPath, MDagPath& endDagPath, MDagPath& ctlDagPath);
 };
 
