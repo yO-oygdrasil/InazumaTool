@@ -1,4 +1,4 @@
-#include "BindHumanBody.h"
+﻿#include "BindHumanBody.h"
 
 
 
@@ -100,7 +100,7 @@ bool BindHumanBody::AddRPIKPole(MDagPath & locDagPath, MDagPath & middleDagPath)
 
 
 
-bool BindHumanBody::BindRPIK()
+bool BindHumanBody::BindRPIK(MDagPath* ikDagPath)
 {
 	MSelectionList selected;
 	MGlobal::getActiveSelectionList(selected);
@@ -110,14 +110,14 @@ bool BindHumanBody::BindRPIK()
 		selected.getDagPath(0, rootObject);
 		selected.getDagPath(1, endObject);
 		selected.getDagPath(2, ctlObject);
-		return BindRPIK(rootObject, endObject, ctlObject);
+		return BindRPIK(rootObject, endObject, ctlObject, ikDagPath);
 	}
 	else if (selected.length() == 2)
 	{
 		MDagPath rootObject, endObject;
 		selected.getDagPath(0, rootObject);
 		selected.getDagPath(1, endObject);
-		return BindRPIK(rootObject, endObject);
+		return BindRPIK(rootObject, endObject, ikDagPath);
 	}
 	else
 	{
@@ -125,14 +125,15 @@ bool BindHumanBody::BindRPIK()
 	}
 }
 
-bool BindHumanBody::BindRPIK(MDagPath & rootDagPath, MDagPath & endDagPath)
+bool BindHumanBody::BindRPIK(MDagPath & rootDagPath, MDagPath & endDagPath, MDagPath* ikDagPath)
 {
 	MDagPath ctlDagPath = BasicFunc::AddChildCircle(endDagPath);
 	BasicFunc::UnparentTransform(ctlDagPath);
-	return BindRPIK(rootDagPath, endDagPath, ctlDagPath);
+	BasicFunc::FreezeTransform(MFnTransform(ctlDagPath));
+	return BindRPIK(rootDagPath, endDagPath, ctlDagPath, ikDagPath);
 }
 
-bool BindHumanBody::BindRPIK(MDagPath & rootDagPath, MDagPath & endDagPath, MDagPath & ctlDagPath)
+bool BindHumanBody::BindRPIK(MDagPath & rootDagPath, MDagPath & endDagPath, MDagPath & ctlDagPath, MDagPath* ikDagPath)
 {
 	/*MFnIkHandle* ikHandle = new MFnIkHandle;
 	MStatus status;
@@ -156,7 +157,12 @@ bool BindHumanBody::BindRPIK(MDagPath & rootDagPath, MDagPath & endDagPath, MDag
 	{
 		MGlobal::displayInfo(msa[i]);
 	}*/
-
+	/*MGlobal::displayInfo("ikName:" + msa[0]);
+	ikDagPath = &(BasicFunc::GetDagPathByName(msa[0]));
+	if (ikDagPath != NULL)
+	{
+		MGlobal::displayInfo(ikDagPath->fullPathName());
+	}*/
 	MDagPath middleObject = MDagPath::getAPathTo(rootDagPath.child(0));
 	MDagPath locDagPath;
 	if (AddRPIKPole(locDagPath, middleObject))
@@ -168,8 +174,17 @@ bool BindHumanBody::BindRPIK(MDagPath & rootDagPath, MDagPath & endDagPath, MDag
 
 	}
 	
-	
 	return true;
+}
+
+bool BindHumanBody::AddReverseFootBone(MDagPath & rootDagPath, MDagPath & middleDagPath, MDagPath & endDagPath, MDagPath ** reverseBones)
+{
+	//啊啊
+	reverseBones = new MDagPath*[6];
+
+
+
+	return false;
 }
 
 

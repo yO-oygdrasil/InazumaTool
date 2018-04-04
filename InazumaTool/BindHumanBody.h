@@ -18,8 +18,12 @@ public:
 	static bool AddRPIKPole(MDagPath& locDagPath, MObject& middleObject);
 	static bool AddRPIKPole(MDagPath& locDagPath, MDagPath& middleDagPath);
 
-	static bool BindRPIK();
-	static bool BindRPIK(MDagPath& rootDagPath, MDagPath& endDagPath);
-	static bool BindRPIK(MDagPath& rootDagPath, MDagPath& endDagPath, MDagPath& ctlDagPath);
+	static bool BindRPIK(MDagPath* ikDagPath = NULL);
+	static bool BindRPIK(MDagPath& rootDagPath, MDagPath& endDagPath, MDagPath* ikDagPath = NULL);
+	static bool BindRPIK(MDagPath& rootDagPath, MDagPath& endDagPath, MDagPath& ctlDagPath, MDagPath* ikDagPath = NULL);
+
+	static bool AddReverseFootBone(MDagPath& rootDagPath, MDagPath& middleDagPath, MDagPath& endDagPath, MDagPath** reverseBones);
+	static bool BindReverseFootRPIK();
+
 };
 
