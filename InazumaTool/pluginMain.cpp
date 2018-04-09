@@ -18,6 +18,8 @@ MStatus initializePlugin(MObject obj)
 	plugin.addMenuItem("create cystal ctl", totalMenuName, "InazumaCommand", paramStr);
 	paramStr = MPCMap::MPCType::AddChildCtl;
 	plugin.addMenuItem("add child ctl", totalMenuName, "InazumaCommand", paramStr);
+	paramStr = MPCMap::MPCType::AddReverseFootBones;
+	plugin.addMenuItem("add reverse foot bones", totalMenuName, "InazumaCommand", paramStr);
 	return MStatus::kSuccess;
 }
 

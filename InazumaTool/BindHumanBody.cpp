@@ -177,11 +177,77 @@ bool BindHumanBody::BindRPIK(MDagPath & rootDagPath, MDagPath & endDagPath, MDag
 	return true;
 }
 
+bool BindHumanBody::AddReverseFootBone(MDagPath ** reverseBones)
+{
+	MSelectionList selected;
+	MGlobal::getActiveSelectionList(selected);
+	if (selected.length() == 3)
+	{
+		MDagPath rootObject, endObject, ctlObject;
+		selected.getDagPath(0, rootObject);
+		selected.getDagPath(1, endObject);
+		selected.getDagPath(2, ctlObject);
+		return AddReverseFootBone(rootObject, endObject, ctlObject, reverseBones);
+	}
+	return false;
+}
+
 bool BindHumanBody::AddReverseFootBone(MDagPath & rootDagPath, MDagPath & middleDagPath, MDagPath & endDagPath, MDagPath ** reverseBones)
 {
 	//啊啊
 	reverseBones = new MDagPath*[6];
+	MFnIkJoint rootJoint;
+	MVector rootPos = MFnTransform(rootDagPath).getTranslation(MSpace::kWorld);
+	MVector middlePos = MFnTransform(middleDagPath).getTranslation(MSpace::kWorld);
+	MVector endPos = MFnTransform(endDagPath).getTranslation(MSpace::kWorld);
+	MGlobal::displayInfo("root:" + BasicFunc::ToCMDSParamStr(rootPos) + " middle:" + BasicFunc::ToCMDSParamStr(middlePos) + " end:" + BasicFunc::ToCMDSParamStr(endPos));
+	
+	MObject jt_ankle_Object = rootJoint.create();
+	MFnIkJoint jt_ankle(MDagPath::getAPathTo(jt_ankle_Object));
+	jt_ankle.setTranslation(rootPos, MSpace::kWorld);
+	
+	MObject jt_heel_Object = rootJoint.create(jt_ankle_Object);
+	MFnIkJoint jt_heel(MDagPath::getAPathTo(jt_heel_Object));
+	jt_heel.setTranslation(MVector(rootPos.x, endPos.y, rootPos.z), MSpace::kWorld);
 
+	MObject jt_side_Object = rootJoint.create(jt_heel_Object);
+	MFnIkJoint jt_side(MDagPath::getAPathTo(jt_side_Object));
+	float sideFactor = 0.6 * (middlePos - endPos).length() / abs(middlePos.z);
+	MString message;
+	std::string messageStr = "sideFactor:" + std::to_string(sideFactor);
+	message = messageStr;
+	MGlobal::displayInfo();
+	jt_side.setTranslation(MVector(middlePos.x, endPos.y, middlePos.z*sideFactor), MSpace::kWorld);
+
+	MObject jt_front_Object = rootJoint.create(jt_side_Object);
+	MFnIkJoint jt_front(MDagPath::getAPathTo(jt_front_Object));
+	jt_front.setTranslation(endPos, MSpace::kWorld);
+
+	MObject jt_middleF_Object = rootJoint.create(jt_front_Object);
+	MFnIkJoint jt_middleF(MDagPath::getAPathTo(jt_middleF_Object));
+	jt_middleF.setTranslation(middlePos, MSpace::kWorld);
+
+	MObject jt_middleB_Object = rootJoint.create(jt_front_Object);
+	MFnIkJoint jt_middleB(MDagPath::getAPathTo(jt_middleB_Object));
+	jt_middleB.setTranslation(middlePos, MSpace::kWorld);
+	
+	MObject jt_toe_Object = rootJoint.create(jt_middleF_Object);
+	MFnIkJoint jt_toe(MDagPath::getAPathTo(jt_toe_Object));
+	jt_toe.setTranslation(endPos, MSpace::kWorld);
+
+	MObject jt_ankleIn_Object = rootJoint.create(jt_middleB_Object);
+	MFnIkJoint jt_ankleIn(MDagPath::getAPathTo(jt_ankleIn_Object));
+	jt_ankleIn.setTranslation(rootPos, MSpace::kWorld);
+
+	MGlobal::displayInfo("create joints ok");
+
+	//MDagPath rootJoint = MDagPath::getAPathTo();
+	for (int i = 0; i < 6; i++)
+	{
+
+
+		//reverseBones[i] = MDagPath::getAPathTo()
+	}
 
 
 	return false;

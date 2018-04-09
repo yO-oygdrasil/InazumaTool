@@ -76,6 +76,11 @@ MStatus MPCMap::doIt(const MArgList & args)
 			BasicFunc::CreateCTL_Crystal("ctl_sample");
 			break;
 		}
+		case MPCType::AddReverseFootBones:
+		{			
+			BindHumanBody::AddReverseFootBone();
+			break;
+		}
 
 		}
 	}

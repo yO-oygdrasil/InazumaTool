@@ -22,7 +22,8 @@ public:
 		AddRPIK = 3,
 		AddRPIKPole = 4,
 		AddChildCtl = 5,
-		CreateCTL_CrysTal = 6
+		CreateCTL_CrysTal = 6,
+		AddReverseFootBones = 7
 	};
 	MStatus doIt(const MArgList& args); 
 	static void* creator(); 

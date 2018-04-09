@@ -22,8 +22,9 @@ public:
 	static bool BindRPIK(MDagPath& rootDagPath, MDagPath& endDagPath, MDagPath* ikDagPath = NULL);
 	static bool BindRPIK(MDagPath& rootDagPath, MDagPath& endDagPath, MDagPath& ctlDagPath, MDagPath* ikDagPath = NULL);
 
-	static bool AddReverseFootBone(MDagPath& rootDagPath, MDagPath& middleDagPath, MDagPath& endDagPath, MDagPath** reverseBones);
+	static bool AddReverseFootBone(MDagPath** reverseBones = NULL);
+	static bool AddReverseFootBone(MDagPath& rootDagPath, MDagPath& middleDagPath, MDagPath& endDagPath, MDagPath** reverseBones = NULL);
 	static bool BindReverseFootRPIK();
-
+	
 };
 
