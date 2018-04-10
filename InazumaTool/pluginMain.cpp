@@ -20,6 +20,8 @@ MStatus initializePlugin(MObject obj)
 	plugin.addMenuItem("add child ctl", totalMenuName, "InazumaCommand", paramStr);
 	paramStr = MPCMap::MPCType::AddReverseFootBones;
 	plugin.addMenuItem("add reverse foot bones", totalMenuName, "InazumaCommand", paramStr);
+	paramStr = MPCMap::MPCType::BindReverseFootRPIK;
+	plugin.addMenuItem("Bind Reverse Foot RPIK", totalMenuName, "InazumaCommand", paramStr);
 	return MStatus::kSuccess;
 }
 

@@ -81,6 +81,11 @@ MStatus MPCMap::doIt(const MArgList & args)
 			BindHumanBody::AddReverseFootBone();
 			break;
 		}
+		case MPCType::BindReverseFootRPIK:
+		{
+			BindHumanBody::BindReverseFootRPIK();
+			break;
+		}
 
 		}
 	}
