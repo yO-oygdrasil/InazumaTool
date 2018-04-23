@@ -196,15 +196,15 @@ MDagPath BasicFunc::CreateCTL_Crystal(MString ctlName)
 	return GetDagPathByName(resultName);
 }
 
-MString BasicFunc::CreateRemapValueNode(float inputMin, float inputMax, float outputMin, float outputMax)
+MString BasicFunc::CreateRemapValueNode(float inputMin, float inputMax, float outputMin, float outputMax, MFnDependencyNode* dependencyNode)
 {
-	MFnDependencyNode dependencyNode;
-	dependencyNode.create("remapValue");
-	dependencyNode.findPlug("inputMin").setFloat(inputMin);
-	dependencyNode.findPlug("inputMax").setFloat(inputMax);
-	dependencyNode.findPlug("outputMin").setFloat(outputMin);
-	dependencyNode.findPlug("outputMax").setFloat(outputMax);
-	return dependencyNode.absoluteName();
+	dependencyNode = new MFnDependencyNode();
+	(*dependencyNode).create("remapValue");
+	(*dependencyNode).findPlug("inputMin").setFloat(inputMin);
+	(*dependencyNode).findPlug("inputMax").setFloat(inputMax);
+	(*dependencyNode).findPlug("outputMin").setFloat(outputMin);
+	(*dependencyNode).findPlug("outputMax").setFloat(outputMax);
+	return (*dependencyNode).absoluteName();
 }
 
 void BasicFunc::IterateChidren(int(*func)(MDagPath &), MDagPath & rootNode)

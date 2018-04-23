@@ -25,7 +25,7 @@ public:
 	static bool CreateLocator(MDagPath& locDagPath, MVector worldPos, MString locatorName = "loc_sample");
 	static MDagPath CreateCircle(MString ctlName = "circle_sample");
 	static MDagPath CreateCTL_Crystal(MString ctlName = "ctl_sample");
-	static MString CreateRemapValueNode(float inputMin, float inputMax, float outputMin, float outputMax);
+	static MString CreateRemapValueNode(float inputMin, float inputMax, float outputMin, float outputMax, MFnDependencyNode* dependencyNode = NULL);
 
 	static void IterateChidren(int(*func)(MDagPath&),MDagPath& rootNode);
 

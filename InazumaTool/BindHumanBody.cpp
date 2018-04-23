@@ -35,14 +35,19 @@ bool BindHumanBody::BindFinger(MObject& rootJointObject, MObject& middleJointObj
 	else
 	{
 		MDagPath ctlDagPath = BasicFunc::AddChildCircle(rootJointObject);
-		MString remapValueNodeName_root = BasicFunc::CreateRemapValueNode(-2, 3, 60, -90);
-		MString remapValueNodeName_rootSide = BasicFunc::CreateRemapValueNode(-1, 1, 30, -30);
-		MString	remapValueNodeName_middle = BasicFunc::CreateRemapValueNode(-1, 3, 30, -90);
-		MString	remapValueNodeName_final = BasicFunc::CreateRemapValueNode(-1, 3, 30, -90);
+		MFnDependencyNode *dn_root, *dn_rootSide, *dn_middle, *dn_final;
+		MString remapValueNodeName_root = BasicFunc::CreateRemapValueNode(-2, 3, 60, -90, dn_root);
+		MString remapValueNodeName_rootSide = BasicFunc::CreateRemapValueNode(-1, 1, 30, -30, dn_rootSide);
+		MString	remapValueNodeName_middle = BasicFunc::CreateRemapValueNode(-1, 3, 30, -90, dn_middle);
+		MString	remapValueNodeName_final = BasicFunc::CreateRemapValueNode(-1, 3, 30, -90, dn_final);
 		MString ctlName = ctlDagPath.fullPathName();
 		MFnDependencyNode mdn(ctlDagPath.node());
 		MPlug plug_ty = mdn.findPlug("translateY");
 
+		/*MDagModifier *dagModifier = new MDagModifier();
+		dagModifier->connect(mdn.findPlug("translateY"), dn_root->findPlug("inputValue"));*/
+		MDagModifier dagModifier;
+		dagModifier.connect(mdn.findPlug("translateY"), dn_root->findPlug("inputValue"));
 	}
 	return true;
 }
