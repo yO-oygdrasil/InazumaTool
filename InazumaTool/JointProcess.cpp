@@ -37,7 +37,7 @@ bool JointProcess::SetJointLimit(MObject & mobject, JointType jointType)
 {
 	if (mobject.hasFn(MFn::kTransform))
 	{
-		return SetJointLimit(MFnTransform(mobject),jointType);
+		return SetJointLimit(MFnTransform(MDagPath::getAPathTo(mobject)),jointType);
 	}
 	else
 	{

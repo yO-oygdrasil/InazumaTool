@@ -46,7 +46,7 @@ MStatus MPCMap::doIt(const MArgList & args)
 		}
 		case MPCType::BindFinger_CTL_L:
 		{
-			MGlobal::displayInfo("oh my god it works222");
+			BindHumanBody::BindFinger(BasicFunc::GetSelectedDagPath(0), "test", false);
 			break;
 		}
 		case MPCType::BindFinger_CTL_R:

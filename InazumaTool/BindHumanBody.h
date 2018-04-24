@@ -6,14 +6,14 @@
 #include <maya/MFnIkHandle.h>
 #include <maya/MFnIkSolver.h>
 #include <maya/MDGModifier.h>
-#include <maya/MDagModifier.h>
+//#include <maya/MDagModifier.h>
 #include "JointProcess.h"
 #include "BasicFunc.h"
 static class BindHumanBody
 {
 public:
-	static bool BindFinger(MObject& rootJoint, MString fingerTag, bool useIK = false);
-	static bool BindFinger(MObject& rootJoint, MObject& middleJoint, MObject& finalJoint, MString fingerTag, bool useIK = false);
+	static bool BindFinger(MDagPath& rootJoint, MString fingerTag, bool useIK = false);
+	static bool BindFinger(MDagPath& rootJoint, MDagPath& middleJoint, MDagPath& finalJoint, MString fingerTag, bool useIK = false);
 	//bool BindFinger(MFnIkJoint& rootJoint, MFnIkJoint& middleJoint, MFnIkJoint& finalJoint, MString fingerTag, bool useIK = false);
 
 	static bool AddRPIKPole(MDagPath& locDagPath);

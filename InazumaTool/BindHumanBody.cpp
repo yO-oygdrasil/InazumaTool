@@ -3,30 +3,32 @@
 
 
 
-bool BindHumanBody::BindFinger(MObject& rootJointObject, MString fingerTag, bool useIK)
+bool BindHumanBody::BindFinger(MDagPath& rootJointDagPath, MString fingerTag, bool useIK)
 {
-	MFnIkJoint rootJoint(rootJointObject);
+	MFnIkJoint rootJoint(rootJointDagPath);
 	
 	if (rootJoint.childCount() > 0)
 	{
 		MObject middleJointObject = rootJoint.child(0);
+		MDagPath middleJointDagPath = MDagPath::getAPathTo(middleJointObject);
 		MFnIkJoint middleJoint(middleJointObject);
 		if (middleJoint.childCount() > 0)
 		{
 			MObject finalJointObject = middleJoint.child(0);
-			MFnIkJoint finalJoint(finalJointObject);
+			MDagPath finalJointDagPath = MDagPath::getAPathTo(finalJointObject);
+			//MFnIkJoint finalJoint(finalJointObject);
 			//enough, start control
-			return BindFinger(rootJointObject, middleJointObject, finalJointObject, fingerTag, useIK);
+			return BindFinger(rootJointDagPath, middleJointDagPath, finalJointDagPath, fingerTag, useIK);
 		}
 	}
 	return true;
 }
 
-bool BindHumanBody::BindFinger(MObject& rootJointObject, MObject& middleJointObject, MObject& finalJointObject, MString fingerTag, bool useIK)
+bool BindHumanBody::BindFinger(MDagPath& rootJointDagPath, MDagPath& middleJointDagPath, MDagPath& finalJointDagPath, MString fingerTag, bool useIK)
 {
-	JointProcess::SetJointLimit(rootJointObject, JointProcess::JointType::FingerRoot);
-	JointProcess::SetJointLimit(middleJointObject, JointProcess::JointType::FingerMiddle);
-	JointProcess::SetJointLimit(finalJointObject, JointProcess::JointType::FingerMiddle);
+	JointProcess::SetJointLimit(rootJointDagPath, JointProcess::JointType::FingerRoot);
+	JointProcess::SetJointLimit(middleJointDagPath, JointProcess::JointType::FingerMiddle);
+	JointProcess::SetJointLimit(finalJointDagPath, JointProcess::JointType::FingerMiddle);
 
 	if (useIK)
 	{
@@ -34,20 +36,57 @@ bool BindHumanBody::BindFinger(MObject& rootJointObject, MObject& middleJointObj
 	}
 	else
 	{
-		MDagPath ctlDagPath = BasicFunc::AddChildCircle(rootJointObject);
-		MFnDependencyNode *dn_root, *dn_rootSide, *dn_middle, *dn_final;
-		MString remapValueNodeName_root = BasicFunc::CreateRemapValueNode(-2, 3, 60, -90, dn_root);
-		MString remapValueNodeName_rootSide = BasicFunc::CreateRemapValueNode(-1, 1, 30, -30, dn_rootSide);
-		MString	remapValueNodeName_middle = BasicFunc::CreateRemapValueNode(-1, 3, 30, -90, dn_middle);
-		MString	remapValueNodeName_final = BasicFunc::CreateRemapValueNode(-1, 3, 30, -90, dn_final);
-		MString ctlName = ctlDagPath.fullPathName();
-		MFnDependencyNode mdn(ctlDagPath.node());
-		MPlug plug_ty = mdn.findPlug("translateY");
+		MDagPath ctlDagPath = BasicFunc::AddChildCircle(rootJointDagPath);
+		MFnDependencyNode *remapNode_root, *remapNode_rootSide, *remapNode_middle, *remapNode_final;
+		MFnDependencyNode **ptr_remapNode_root = &remapNode_root,
+			**ptr_remapNode_rootSide = &remapNode_rootSide,
+			**ptr_remapNode_middle = &remapNode_middle,
+			**ptr_remapNode_final = &remapNode_final;
 
-		/*MDagModifier *dagModifier = new MDagModifier();
-		dagModifier->connect(mdn.findPlug("translateY"), dn_root->findPlug("inputValue"));*/
-		MDagModifier dagModifier;
-		dagModifier.connect(mdn.findPlug("translateY"), dn_root->findPlug("inputValue"));
+		MString remapValueNodeName_root = BasicFunc::CreateRemapValueNode(-2, 3, 60, -90, ptr_remapNode_root);
+		MString remapValueNodeName_rootSide = BasicFunc::CreateRemapValueNode(-1, 1, 30, -30, ptr_remapNode_rootSide);
+		MString	remapValueNodeName_middle = BasicFunc::CreateRemapValueNode(-1, 3, 30, -90, ptr_remapNode_middle);
+		MString	remapValueNodeName_final = BasicFunc::CreateRemapValueNode(-1, 3, 30, -90, ptr_remapNode_final);
+		MString ctlName = ctlDagPath.fullPathName();
+		MFnDependencyNode dn_ctl(ctlDagPath.node());
+		MFnDependencyNode dn_root(rootJointDagPath.node());
+		MFnDependencyNode dn_middle(middleJointDagPath.node());
+		MFnDependencyNode dn_final(finalJointDagPath.node());
+
+		//test
+		MFnDependencyNode *node;
+		MFnDependencyNode **ptr_node = &node;
+		BasicFunc::CreateRemapValueNode(-2, 3, 60, -90, ptr_node);
+		//test end
+
+		/*MPlug plug_ctlTy = dn_ctl.findPlug("translateY");
+		MGlobal::displayInfo("plug name:" + plug_ctlTy.partialName() + " fullname:" + plug_ctlTy.name());*/
+		MStatus status;
+		//MPlug plug_remapNode_root_input = remapNode_root->findPlug("inputValue", &status);
+		//if (status == MStatus::kSuccess)
+		//{
+		//	MGlobal::displayInfo("success 634634");
+		//	//MGlobal::displayInfo("plug name:" + plug_remapNode_root_input.partialName() + " fullname:" + plug_remapNode_root_input.name());
+		//}
+		//else
+		//{
+		//	MGlobal::displayInfo("failed a23234234");
+		//}
+		MDGModifier dgModifier;
+		dgModifier.doIt();
+		dgModifier.connect(dn_ctl.findPlug("translateY"), remapNode_root->findPlug("inputValue"));
+		dgModifier.connect(remapNode_root->findPlug("outValue"), dn_root.findPlug("rotateZ"));
+
+		dgModifier.connect(dn_ctl.findPlug("translateZ"), remapNode_rootSide->findPlug("inputValue"));
+		dgModifier.connect(remapNode_rootSide->findPlug("outValue"), dn_root.findPlug("rotateY"));
+
+		dgModifier.connect(dn_ctl.findPlug("translateX"), remapNode_middle->findPlug("inputValue"));
+		dgModifier.connect(remapNode_middle->findPlug("outValue"), dn_middle.findPlug("rotateZ"));
+
+		dgModifier.connect(dn_ctl.findPlug("translateX"), remapNode_final->findPlug("inputValue"));
+		dgModifier.connect(remapNode_final->findPlug("outValue"), dn_final.findPlug("rotateZ"));
+		dgModifier.doIt();
+		
 	}
 	return true;
 }

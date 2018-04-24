@@ -3,6 +3,7 @@
 #include<maya/MFnTransform.h>
 #include<maya/MVector.h>
 #include<maya/MFnIkJoint.h>
+#include<maya/MDagPath.h>
 #include "ConstantValue.h"
 #include<maya/MFn.h>
 #include <list>
