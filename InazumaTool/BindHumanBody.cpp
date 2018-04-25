@@ -87,6 +87,7 @@ bool BindHumanBody::BindFinger(MDagPath& rootJointDagPath, MDagPath& middleJoint
 		dgModifier.connect(remapNode_final->findPlug("outValue"), dn_final.findPlug("rotateZ"));
 		dgModifier.doIt();
 		
+		BasicFunc::SetTranslateLimit(MFnTransform(ctlDagPath), -1, -2, -1, 3, 3, 1);
 	}
 	return true;
 }
