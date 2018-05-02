@@ -36,7 +36,7 @@ bool BindHumanBody::BindFinger(MDagPath& rootJointDagPath, MDagPath& middleJoint
 	}
 	else
 	{
-		MDagPath ctlDagPath = BasicFunc::AddChildCircle(rootJointDagPath);
+		MDagPath ctlDagPath = BasicFunc::AddParentCircle(rootJointDagPath, true);
 		MFnDependencyNode *remapNode_root, *remapNode_rootSide, *remapNode_middle, *remapNode_final;
 		MFnDependencyNode **ptr_remapNode_root = &remapNode_root,
 			**ptr_remapNode_rootSide = &remapNode_rootSide,
@@ -61,7 +61,7 @@ bool BindHumanBody::BindFinger(MDagPath& rootJointDagPath, MDagPath& middleJoint
 
 		/*MPlug plug_ctlTy = dn_ctl.findPlug("translateY");
 		MGlobal::displayInfo("plug name:" + plug_ctlTy.partialName() + " fullname:" + plug_ctlTy.name());*/
-		MStatus status;
+		//MStatus status;
 		//MPlug plug_remapNode_root_input = remapNode_root->findPlug("inputValue", &status);
 		//if (status == MStatus::kSuccess)
 		//{

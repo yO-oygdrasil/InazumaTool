@@ -10,20 +10,33 @@ MStatus initializePlugin(MObject obj)
 	MString paramStr;//never do [MString str = (int)], must be two line
 	//std::to_string((int)MPCMap::MPCType::BindFinger_CTL_L).c_str();
 	//int intValue = (int)MPCMap::MPCType::Test;
+	paramStr = MPCMap::MPCType::Test;
+	plugin.addMenuItem("Test", totalMenuName, "InazumaCommand", paramStr);
+
 	paramStr = MPCMap::MPCType::AddRPIK;
 	plugin.addMenuItem("add rpik", totalMenuName, "InazumaCommand", paramStr);
+
 	paramStr = (int)MPCMap::MPCType::AddRPIKPole;
 	plugin.addMenuItem("add rpik pole", totalMenuName, "InazumaCommand", paramStr);
+
 	paramStr = MPCMap::MPCType::CreateCTL_CrysTal;
 	plugin.addMenuItem("create cystal ctl", totalMenuName, "InazumaCommand", paramStr);
+
 	paramStr = MPCMap::MPCType::AddChildCtl;
 	plugin.addMenuItem("add child ctl", totalMenuName, "InazumaCommand", paramStr);
+
+	paramStr = MPCMap::MPCType::AddParentCtl;
+	plugin.addMenuItem("add parent ctl", totalMenuName, "InazumaCommand", paramStr);
+
 	paramStr = MPCMap::MPCType::AddReverseFootBones;
 	plugin.addMenuItem("add reverse foot bones", totalMenuName, "InazumaCommand", paramStr);
+
 	paramStr = MPCMap::MPCType::BindReverseFootRPIK;
 	plugin.addMenuItem("Bind Reverse Foot RPIK", totalMenuName, "InazumaCommand", paramStr);
+
 	paramStr = MPCMap::MPCType::BindFinger_CTL_L;
 	plugin.addMenuItem("Bind Finger using CTL L", totalMenuName, "InazumaCommand", paramStr);
+
 	return MStatus::kSuccess;
 }
 

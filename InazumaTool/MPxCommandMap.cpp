@@ -27,21 +27,7 @@ MStatus MPCMap::doIt(const MArgList & args)
 		{
 		case MPCType::Test:
 		{
-			MGlobal::displayInfo("oh my god it works");
-			MFnTransform selected(BasicFunc::GetSelectedDagPath(0));
-			MStatus success = MStatus();
-			MVector worldPos = selected.getTranslation(MSpace::kWorld, &success);
-			if (success == MStatus::kSuccess)
-			{
-				MGlobal::displayInfo("success");
-			}
-			else
-			{
-				MGlobal::displayInfo("failure");
-			}
-			//selected.setTranslation(worldPos, MSpace::kWorld);
-			MGlobal::displayInfo("selected object worldPos:" + BasicFunc::ToCMDSParamStr(worldPos));
-			MGlobal::displayInfo("hahaha");
+			BasicFunc::AddEmptyGroup(MFnTransform(BasicFunc::GetSelectedDagPath(0)));
 			break;
 		}
 		case MPCType::BindFinger_CTL_L:
@@ -69,6 +55,11 @@ MStatus MPCMap::doIt(const MArgList & args)
 		case MPCType::AddChildCtl:
 		{
 			BasicFunc::AddChildCircle(BasicFunc::GetSelectedDagPath(0));
+			break;
+		}
+		case MPCType::AddParentCtl:
+		{
+			BasicFunc::AddParentCircle(BasicFunc::GetSelectedDagPath(0), true);
 			break;
 		}
 		case MPCType::CreateCTL_CrysTal:

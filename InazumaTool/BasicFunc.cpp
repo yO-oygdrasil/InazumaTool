@@ -139,14 +139,46 @@ MDagPath BasicFunc::AddChildCircle(MDagPath& targetDagPath)
 	return ctlDagPath;
 }
 
-MDagPath BasicFunc::AddParentCircle(MObject & targetObject)
+
+
+MDagPath BasicFunc::AddParentCircle(MObject & targetObject, bool createParallelGrp)
 {
-	return MDagPath();
+	if (targetObject.hasFn(MFn::kTransform))
+	{
+		return AddParentCircle(MDagPath::getAPathTo(targetObject), createParallelGrp);
+	}
+	else
+	{
+		return MDagPath();
+	}
 }
 
-MDagPath BasicFunc::AddParentCircle(MDagPath & targetDagPath)
+MDagPath BasicFunc::AddParentCircle(MDagPath & targetDagPath, bool createParallelGrp)
 {
-	return MDagPath();
+	MString ctlName = "ctl_" + targetDagPath.partialPathName();
+	MDagPath ctlDagPath = BasicFunc::CreateCircle(ctlName);
+	ctlName = ctlDagPath.fullPathName();
+	MFnTransform targetTrans(targetDagPath);
+	if (createParallelGrp)
+	{		
+		MFnTransform parellelGrpTrans(AddEmptyGroup(MFnTransform(targetTrans.parent(0)))); 
+		MGlobal::displayInfo("beforeLocalPos:" + BasicFunc::ToCMDSParamStr(parellelGrpTrans.getTranslation(MSpace::kObject)));
+		MVector targetLocalPos = targetTrans.getTranslation(MSpace::kTransform);
+		as
+		MGlobal::displayInfo("targetLocalPos:" + BasicFunc::ToCMDSParamStr(targetLocalPos));
+		parellelGrpTrans.setTranslation(targetTrans.getTranslation(MSpace::kObject), MSpace::kObject);
+		MGlobal::displayInfo("currentLocalPos:" + BasicFunc::ToCMDSParamStr(parellelGrpTrans.getTranslation(MSpace::kObject)));
+		MVector testVec = targetTrans.rotatePivotTranslation(MSpace::kObject);
+		MGlobal::displayInfo("finalLocalPos:"+BasicFunc::ToCMDSParamStr(parellelGrpTrans.getTranslation(MSpace::kObject)));
+		parellelGrpTrans.setRotatePivotTranslation(testVec, MSpace::kObject);
+		SetTransformParent(ctlName, parellelGrpTrans.fullPathName());
+	}
+
+	MFnTransform circleTransform(ctlDagPath);
+	circleTransform.setTranslation(MVector(0, 0, 0), MSpace::kObject);
+	circleTransform.setRotation(MEulerRotation(0, 90 / ConstantValue::DPR, 0));
+	FreezeTransform(circleTransform);
+	return ctlDagPath;
 }
 
 
@@ -178,8 +210,7 @@ MDagPath BasicFunc::CreateCircle(MString ctlName)
 	else
 	{
 		return MDagPath();
-	}
-		
+	}		
 }
 
 
@@ -218,14 +249,34 @@ void BasicFunc::IterateChidren(int(*func)(MDagPath &), MDagPath & rootNode)
 }
 
 
+MDagPath BasicFunc::AddEmptyGroup(MFnTransform & parent)
+{
+	return AddEmptyGroup("grp_childrenOf" + parent.partialPathName(), parent.fullPathName());
+}
+
+MDagPath BasicFunc::AddEmptyGroup(MString grpName, MString parentName)
+{
+	MString resultGrpName = MGlobal::executeCommandStringResult("group -em -n " + grpName);
+	MDagPath resultGrpDagPath = GetDagPathByName(resultGrpName);
+	if (parentName.length()>0)
+	{
+		MFnTransform resultGrpTrans(resultGrpDagPath);
+		SetTransformParent(resultGrpName, parentName);
+		ClearTransform(resultGrpTrans);
+		FreezeTransform(resultGrpTrans);
+	}
+	return resultGrpDagPath;
+}
+
+
+
 void BasicFunc::SetTransformParent(MFnTransform& c, MFnTransform& p)
 {	
 	SetTransformParent(c.fullPathName(), p.fullPathName());
 }
 
 void BasicFunc::SetTransformParent(MString cFullName, MString pFullName)
-{
-	
+{	
 	MGlobal::executePythonCommand("cmds.parent('" + cFullName + "','" + pFullName + "')",true);
 }
 
@@ -242,6 +293,22 @@ void BasicFunc::UnparentTransform(MFnTransform & mfnTrans)
 void BasicFunc::FreezeTransform(MFnTransform& targetTransform)
 {	
 	MGlobal::executePythonCommand("cmds.makeIdentity('" + targetTransform.fullPathName() + "',apply=True)", true);
+}
+
+void BasicFunc::ClearTransform(MFnTransform & targetTransform, bool clearPos, bool clearPivotRot, bool clearPivotScale)
+{
+	if (clearPos)
+	{
+		targetTransform.setTranslation(MVector::zero, MSpace::kObject);
+	}
+	if (clearPivotRot)
+	{
+		targetTransform.setRotatePivotTranslation(MVector::zero, MSpace::kObject);
+	}
+	if (clearPivotScale)
+	{
+		targetTransform.setScalePivotTranslation(MVector::one, MSpace::kObject);
+	}
 }
 
 MString BasicFunc::SubUShell(MString originStr)

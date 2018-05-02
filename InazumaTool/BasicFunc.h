@@ -41,9 +41,11 @@ public:
 
 	static MDagPath AddChildCircle(MObject& targetObject);
 	static MDagPath AddChildCircle(MDagPath& targetDagPath);
-	static MDagPath AddParentCircle(MObject& targetObject);
-	static MDagPath AddParentCircle(MDagPath& targetDagPath);
+	static MDagPath AddParentCircle(MObject& targetObject, bool createParallelGrp = false);
+	static MDagPath AddParentCircle(MDagPath& targetDagPath, bool createParallelGrp = false);
 
+	static MDagPath AddEmptyGroup(MFnTransform& parent);
+	static MDagPath AddEmptyGroup(MString grpName, MString parentName = "");
 
 
 	static void SetTransformParent(MFnTransform& c, MFnTransform& p);
@@ -51,6 +53,7 @@ public:
 	static void UnparentTransform(MDagPath& dagPath);
 	static void UnparentTransform(MFnTransform& mfnTrans);
 	static void FreezeTransform(MFnTransform& targetTransform);
+	static void ClearTransform(MFnTransform& targetTransform, bool clearPos = true, bool clearPivotRot = true, bool clearPivotScale = true);
 
 	static MString SubUShell(MString originStr);
 	static MStringArray SplitPythonResultStr(MString pythonStr);

@@ -22,9 +22,10 @@ public:
 		AddRPIK = 3,
 		AddRPIKPole = 4,
 		AddChildCtl = 5,
-		CreateCTL_CrysTal = 6,
-		AddReverseFootBones = 7,
-		BindReverseFootRPIK = 8
+		AddParentCtl = 6,
+		CreateCTL_CrysTal = 7,
+		AddReverseFootBones = 8,
+		BindReverseFootRPIK = 9
 	};
 	MStatus doIt(const MArgList& args); 
 	static void* creator(); 
