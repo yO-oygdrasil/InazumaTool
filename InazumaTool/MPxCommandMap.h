@@ -25,7 +25,9 @@ public:
 		AddParentCtl = 6,
 		CreateCTL_CrysTal = 7,
 		AddReverseFootBones = 8,
-		BindReverseFootRPIK = 9
+		BindReverseFootRPIK = 9,
+
+		CreateJointsCurve = 10
 	};
 	MStatus doIt(const MArgList& args); 
 	static void* creator(); 

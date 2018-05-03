@@ -27,7 +27,7 @@ MStatus MPCMap::doIt(const MArgList & args)
 		{
 		case MPCType::Test:
 		{
-			BasicFunc::AddEmptyGroup(MFnTransform(BasicFunc::GetSelectedDagPath(0)));
+			JointProcess::CreateJointsCurve(NULL);
 			break;
 		}
 		case MPCType::BindFinger_CTL_L:
@@ -77,7 +77,11 @@ MStatus MPCMap::doIt(const MArgList & args)
 			BindHumanBody::BindReverseFootRPIK();
 			break;
 		}
-
+		case MPCType::CreateJointsCurve:
+		{
+			JointProcess::CreateJointsCurve(NULL);
+			break;
+		}
 		}
 	}
 	else

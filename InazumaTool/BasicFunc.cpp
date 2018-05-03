@@ -69,6 +69,25 @@ MDagPath BasicFunc::GetSelectedDagPath(int index)
 	return dagPath;
 }
 
+int BasicFunc::GetSelectedDagPaths(MDagPath ** result)
+{
+	MSelectionList selected;
+	MGlobal::getActiveSelectionList(selected);
+	int count = selected.length();
+	if (count == 0)
+	{
+		return 0;
+	}
+	result = new MDagPath*[count];
+	for (int i = 0; i < count; i++)
+	{
+		MDagPath dagPath;
+		selected.getDagPath(i, dagPath);
+		result[i] = &dagPath;
+	}
+	return count;
+}
+
 
 
 MSelectionList BasicFunc::GetObjectsByName(MString name)

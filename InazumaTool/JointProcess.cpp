@@ -79,3 +79,23 @@ bool JointProcess::SetJointLimit(MFnTransform & mfnTransform, JointType jointTyp
 	}
 	return true;
 }
+
+void JointProcess::CreateJointsCurve(MDagPath ** jointDagPaths)
+{
+	int count;
+	if (jointDagPaths == NULL)
+	{
+		count = BasicFunc::GetSelectedDagPaths(jointDagPaths);
+	}
+	else
+	{
+		count = sizeof(jointDagPaths) / sizeof(MDagPath);
+	}
+
+	MGlobal::displayInfo("selected count:" + count);
+	for (int i = 0; i <count; i++)
+	{
+		MGlobal::displayInfo((*(jointDagPaths[i])).fullPathName());
+	}
+
+}

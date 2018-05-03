@@ -31,7 +31,7 @@ public:
 
 	static MObject GetSelectedObject(int index);
 	static MDagPath GetSelectedDagPath(int index);
-
+	static int GetSelectedDagPaths(MDagPath** result);
 	//static void PrintMVector(MVector vec);
 	//static void Print(MString str);
 

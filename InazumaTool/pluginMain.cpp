@@ -6,36 +6,46 @@ MStatus initializePlugin(MObject obj)
 	MFnPlugin plugin(obj, "InazumaTool", "beta", MApiVersion);
 
 	MString totalMenuName = GetMayaWindowName();
+	//MGlobal::displayInfo("Total Menu Name:" + totalMenuName);
 	plugin.registerCommand("InazumaCommand", MPCMap::creator);
+
+
 	MString paramStr;//never do [MString str = (int)], must be two line
-	//std::to_string((int)MPCMap::MPCType::BindFinger_CTL_L).c_str();
-	//int intValue = (int)MPCMap::MPCType::Test;
+					 //std::to_string((int)MPCMap::MPCType::BindFinger_CTL_L).c_str();
+					 //int intValue = (int)MPCMap::MPCType::Test;
 	paramStr = MPCMap::MPCType::Test;
 	plugin.addMenuItem("Test", totalMenuName, "InazumaCommand", paramStr);
 
+	MString subMenuName_bodyBind = AddSubMenu(totalMenuName, "Body Bind",true);
+	MString subMenuName_create= AddSubMenu(totalMenuName, "Create",true);
+
+
+
+
 	paramStr = MPCMap::MPCType::AddRPIK;
-	plugin.addMenuItem("add rpik", totalMenuName, "InazumaCommand", paramStr);
+	plugin.addMenuItem("add rpik", subMenuName_bodyBind, "InazumaCommand", paramStr);
 
 	paramStr = (int)MPCMap::MPCType::AddRPIKPole;
-	plugin.addMenuItem("add rpik pole", totalMenuName, "InazumaCommand", paramStr);
+	plugin.addMenuItem("add rpik pole", subMenuName_create, "InazumaCommand", paramStr);
 
 	paramStr = MPCMap::MPCType::CreateCTL_CrysTal;
-	plugin.addMenuItem("create cystal ctl", totalMenuName, "InazumaCommand", paramStr);
+	plugin.addMenuItem("create cystal ctl", subMenuName_create, "InazumaCommand", paramStr);
 
 	paramStr = MPCMap::MPCType::AddChildCtl;
-	plugin.addMenuItem("add child ctl", totalMenuName, "InazumaCommand", paramStr);
+	plugin.addMenuItem("add child ctl", subMenuName_create, "InazumaCommand", paramStr);
 
 	paramStr = MPCMap::MPCType::AddParentCtl;
-	plugin.addMenuItem("add parent ctl", totalMenuName, "InazumaCommand", paramStr);
+	plugin.addMenuItem("add parent ctl", subMenuName_create, "InazumaCommand", paramStr);
 
 	paramStr = MPCMap::MPCType::AddReverseFootBones;
-	plugin.addMenuItem("add reverse foot bones", totalMenuName, "InazumaCommand", paramStr);
+	plugin.addMenuItem("add reverse foot bones", subMenuName_create, "InazumaCommand", paramStr);
 
 	paramStr = MPCMap::MPCType::BindReverseFootRPIK;
-	plugin.addMenuItem("Bind Reverse Foot RPIK", totalMenuName, "InazumaCommand", paramStr);
+	plugin.addMenuItem("Bind Reverse Foot RPIK", subMenuName_bodyBind, "InazumaCommand", paramStr);
 
 	paramStr = MPCMap::MPCType::BindFinger_CTL_L;
-	plugin.addMenuItem("Bind Finger using CTL L", totalMenuName, "InazumaCommand", paramStr);
+	plugin.addMenuItem("Bind Finger using CTL L", subMenuName_bodyBind, "InazumaCommand", paramStr);
+	
 
 	return MStatus::kSuccess;
 }
@@ -44,8 +54,15 @@ MString totalMenuName;
 MString GetMayaWindowName()
 {
 	MGlobal::executePythonCommand("import maya.cmds as cmds");
-	totalMenuName = MGlobal::executePythonCommandStringResult("cmds.menu(parent=mel.eval('$temp1=$gMainWindow'), label='InazumaTool')");
+	totalMenuName = MGlobal::executePythonCommandStringResult("cmds.menu(parent=mel.eval('$temp1=$gMainWindow'), label='InazumaTool',tearOff = True)");
 	return totalMenuName;
+}
+
+MString AddSubMenu(MString parentMenuName,MString labelStr,bool tearOff)
+{
+	MGlobal::executePythonCommand("import maya.cmds as cmds");
+	MString subMenuName = MGlobal::executePythonCommandStringResult((tearOff?"cmds.menuItem(tearOff = True, parent='":"cmds.menuItem(parent='") + parentMenuName + "',subMenu = True, label='" + labelStr + "')");
+	return subMenuName;
 }
 
 MStatus uninitializePlugin(MObject obj)

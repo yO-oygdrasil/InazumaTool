@@ -135,9 +135,7 @@
     <ClInclude Include="BasicFunc.h" />
     <ClInclude Include="BindHumanBody.h" />
     <ClInclude Include="ConstantValue.h" />
-    <ClInclude Include="Cubater.h" />
     <ClInclude Include="MaterialManager.h" />
-    <ClInclude Include="UVManager.h" />
     <ClInclude Include="VertDataIO.h" />
     <ClInclude Include="JointProcess.h" />
     <ClInclude Include="MPxCommandMap.h" />
@@ -147,9 +145,7 @@
     <ClCompile Include="BasicFunc.cpp" />
     <ClCompile Include="BindHumanBody.cpp" />
     <ClCompile Include="ConstantValue.cpp" />
-    <ClCompile Include="Cubater.cpp" />
     <ClCompile Include="MaterialManager.cpp" />
-    <ClCompile Include="UVManager.cpp" />
     <ClCompile Include="VertDataIO.cpp" />
     <ClCompile Include="JointProcess.cpp" />
     <ClCompile Include="MPxCommandMap.cpp" />

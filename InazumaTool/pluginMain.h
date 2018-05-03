@@ -11,7 +11,7 @@
 
 MString GetMayaWindowName();
 
-
+MString AddSubMenu(MString parentMenuName, MString labelStr, bool tearOff = false);
 
 
 
