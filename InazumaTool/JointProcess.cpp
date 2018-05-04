@@ -83,19 +83,46 @@ bool JointProcess::SetJointLimit(MFnTransform & mfnTransform, JointType jointTyp
 void JointProcess::CreateJointsCurve(MDagPath ** jointDagPaths)
 {
 	int count;
+	bool deleteMemory = false;
 	if (jointDagPaths == NULL)
 	{
+		deleteMemory = true;
+		MDagPath* dagPaths = NULL;
+		jointDagPaths = &dagPaths;
+		//MGlobal::displayInfo("start danger");
 		count = BasicFunc::GetSelectedDagPaths(jointDagPaths);
+		MString message = "inside size:";
+		message += (int)(sizeof(jointDagPaths));
+		MGlobal::displayInfo(message);
 	}
 	else
 	{
 		count = sizeof(jointDagPaths) / sizeof(MDagPath);
 	}
-
-	MGlobal::displayInfo("selected count:" + count);
-	for (int i = 0; i <count; i++)
+	MString msg = "selected count:";
+	msg += count;// ((char*)count);
+	MGlobal::displayInfo(msg);
+	if (jointDagPaths == NULL)
 	{
-		MGlobal::displayInfo((*(jointDagPaths[i])).fullPathName());
+		MGlobal::displayInfo("ash to ash");
+	}
+	else
+	{
+		Sleep(8000);
+		MString message = "outside size:";
+		message += (int)(sizeof(jointDagPaths));
+		MGlobal::displayInfo(message);
 	}
 
+	/*for (int i = 0; i <count; i++)
+	{
+		MGlobal::displayInfo((*(jointDagPaths[i])).fullPathName());
+	}*/
+	/*if (deleteMemory && (*jointDagPaths))
+	{
+		delete(*jointDagPaths);
+	}*/
 }
+
+
+

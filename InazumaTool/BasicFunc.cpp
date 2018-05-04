@@ -78,12 +78,15 @@ int BasicFunc::GetSelectedDagPaths(MDagPath ** result)
 	{
 		return 0;
 	}
-	result = new MDagPath*[count];
+	
+	MDagPath* dagPaths = new MDagPath[count];
+	*result = dagPaths;
+	//MGlobal::displayInfo("there it is");
 	for (int i = 0; i < count; i++)
 	{
 		MDagPath dagPath;
 		selected.getDagPath(i, dagPath);
-		result[i] = &dagPath;
+		dagPaths[i] = dagPath;
 	}
 	return count;
 }
