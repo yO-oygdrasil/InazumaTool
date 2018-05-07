@@ -7,6 +7,7 @@
 #include "ConstantValue.h"
 #include<maya/MFn.h>
 #include <maya/MGlobal.h>
+#include <maya/MSelectionList.h>
 #include "BasicFunc.h"
 #include <list>
 #include <numeric>  
@@ -25,7 +26,8 @@ public:
 	static bool SetJointLimit(MObject& mobject, JointType jointType);
 	static bool SetJointLimit(MFnTransform& mfnTrans, JointType jointType);
 
-	static void CreateJointsCurve(MDagPath** jointDagPaths = NULL);
+	//static void CreateJointsCurve(MDagPath** jointDagPaths = NULL);
+	static void CreateJointsCurve(MSelectionList jointDagPaths);
 private:
 	static bool SetLimit(MFnTransform & mfnTrans, float rxMin, float ryMin, float rzMin, float rxMax, float ryMax, float rzMax, bool inRadian);
 

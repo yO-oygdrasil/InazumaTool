@@ -27,7 +27,7 @@ MStatus MPCMap::doIt(const MArgList & args)
 		{
 		case MPCType::Test:
 		{
-			JointProcess::CreateJointsCurve(NULL);
+			JointProcess::CreateJointsCurve(BasicFunc::GetSelectedDagPaths());
 			break;
 		}
 		case MPCType::BindFinger_CTL_L:
@@ -79,7 +79,7 @@ MStatus MPCMap::doIt(const MArgList & args)
 		}
 		case MPCType::CreateJointsCurve:
 		{
-			JointProcess::CreateJointsCurve(NULL);
+			JointProcess::CreateJointsCurve(BasicFunc::GetSelectedDagPaths());
 			break;
 		}
 		}

@@ -80,48 +80,92 @@ bool JointProcess::SetJointLimit(MFnTransform & mfnTransform, JointType jointTyp
 	return true;
 }
 
-void JointProcess::CreateJointsCurve(MDagPath ** jointDagPaths)
-{
-	int count;
-	bool deleteMemory = false;
-	if (jointDagPaths == NULL)
-	{
-		deleteMemory = true;
-		MDagPath* dagPaths = NULL;
-		jointDagPaths = &dagPaths;
-		//MGlobal::displayInfo("start danger");
-		count = BasicFunc::GetSelectedDagPaths(jointDagPaths);
-		MString message = "inside size:";
-		message += (int)(sizeof(jointDagPaths));
-		MGlobal::displayInfo(message);
-	}
-	else
-	{
-		count = sizeof(jointDagPaths) / sizeof(MDagPath);
-	}
-	MString msg = "selected count:";
-	msg += count;// ((char*)count);
-	MGlobal::displayInfo(msg);
-	if (jointDagPaths == NULL)
-	{
-		MGlobal::displayInfo("ash to ash");
-	}
-	else
-	{
-		Sleep(8000);
-		MString message = "outside size:";
-		message += (int)(sizeof(jointDagPaths));
-		MGlobal::displayInfo(message);
-	}
+//void JointProcess::CreateJointsCurve(MDagPath ** jointDagPaths)
+//{
+//	int count;
+//	bool deleteMemory = false;
+//	if (jointDagPaths == NULL)
+//	{
+//		deleteMemory = true;
+//		MDagPath* dagPaths = NULL;
+//		jointDagPaths = &dagPaths;
+//		//MGlobal::displayInfo("start danger");
+//		count = BasicFunc::GetSelectedDagPaths().length();
+//		//MString message = "inside size:";
+//		//message += (int)(sizeof(*jointDagPaths)/sizeof(MDagPath));
+//		//MGlobal::displayInfo(message);
+//	}
+//	else
+//	{
+//		count = sizeof(*jointDagPaths) / sizeof(MDagPath);
+//	}
+//
+//	MString msg = "selected count:";
+//	msg += std::to_string(count).c_str();
+//	MGlobal::displayInfo(msg);
+//
+//
+//	if (jointDagPaths == NULL || count == 0)
+//	{
+//		MGlobal::displayInfo("ash to ash");
+//		return;
+//	}
+//	/*else
+//	{
+//		MString message = "outside size:";
+//		message += (int)(sizeof(jointDagPaths));
+//		MGlobal::displayInfo(message);
+//	}*/
+//
+//
+//	MVector *vectors = new MVector[count];
+//	for (int i = 0; i < count; i++)
+//	{
+//		MDagPath dagPath;
+//
+//		MFnTransform ptTrans((*jointDagPaths)[i]);
+//		vectors[i] = ptTrans.getTranslation(MSpace::kWorld);
+//		MGlobal::displayInfo(BasicFunc::ToCMDSParamStr(vectors[i]));
+//	}
+//	MDagPath curveDagPath = BasicFunc::CreateCurve(vectors, "curve_" + (*jointDagPaths)[0].partialPathName() + "_" + (*jointDagPaths)[count - 1].partialPathName());
+//	MGlobal::displayInfo("create Finish");
+//
+//	if (deleteMemory && (*jointDagPaths))
+//	{
+//		delete[] (*jointDagPaths);
+//		jointDagPaths = NULL;
+//	}
+//}
 
-	/*for (int i = 0; i <count; i++)
+
+void JointProcess::CreateJointsCurve(MSelectionList jointDagPathList)
+{
+	int count = jointDagPathList.length();
+	MString curveName = "curve_";
+	MVector *vectors = new MVector[count];
+	for (int i = 0; i < count; i++)
 	{
-		MGlobal::displayInfo((*(jointDagPaths[i])).fullPathName());
-	}*/
-	/*if (deleteMemory && (*jointDagPaths))
+		MDagPath dagPath;
+		jointDagPathList.getDagPath(i, dagPath);
+		if (i == 0)
+		{
+			curveName += dagPath.partialPathName() + "_";
+		}
+		else if (i == count - 1)
+		{
+			curveName += dagPath.partialPathName();
+		}
+		MFnTransform ptTrans(dagPath);
+		vectors[i] = ptTrans.getTranslation(MSpace::kWorld);
+		//MGlobal::displayInfo(BasicFunc::ToCMDSParamStr(vectors[i]));
+	}
+	MDagPath curveDagPath = BasicFunc::CreateCurve(vectors, count, curveName);
+	MGlobal::displayInfo("create Finish");
+
+	if (vectors)
 	{
-		delete(*jointDagPaths);
-	}*/
+		delete[](vectors);
+	}
 }
 
 

@@ -1,7 +1,7 @@
 ﻿#include "BindHumanBody.h"
 
 
-
+#pragma region Finger
 
 bool BindHumanBody::BindFinger(MDagPath& rootJointDagPath, MString fingerTag, bool useIK)
 {
@@ -92,7 +92,9 @@ bool BindHumanBody::BindFinger(MDagPath& rootJointDagPath, MDagPath& middleJoint
 	return true;
 }
 
+#pragma endregion
 
+#pragma region RPIK
 
 
 bool BindHumanBody::AddRPIKPole(MDagPath& locDagPath)
@@ -223,6 +225,13 @@ bool BindHumanBody::BindRPIK(MDagPath & rootDagPath, MDagPath & endDagPath, MDag
 	return true;
 }
 
+
+#pragma endregion
+
+#pragma region Foot
+
+
+
 bool BindHumanBody::AddReverseFootBone(MDagPath **reverseBones)
 {
 	MSelectionList selected;
@@ -332,9 +341,14 @@ bool BindHumanBody::BindReverseFootRPIK(MDagPath & legRootDagPath, MDagPath & an
 	MGlobal::executeCommandStringResult("orientConstraint -mo " + rbs[5].fullPathName() + " " + ankleDagPath.fullPathName());
 
 	MGlobal::displayInfo("try delete rbs");
-	delete(rbs);
+	if (rbs)
+	{
+		delete[](rbs);
+	}
 	MGlobal::displayInfo("delete complete");
 	return true;
 }
 
 
+
+#pragma endregion

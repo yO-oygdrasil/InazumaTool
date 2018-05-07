@@ -25,17 +25,37 @@ void BasicFunc::SetTranslateLimit(MFnTransform & mfnTrans, float minX, float min
 
 MString BasicFunc::ToCMDSParamStr(MVector vector)
 {	
-	MString temp;
-	temp = vector.x;
-	//MGlobal::displayInfo(temp);
-	char* str = new char[50];
-	sprintf_s(str, 50, "(%f,%f,%f)", vector.x, vector.y, vector.z);
-	//std::stringstream ss;
-	//ss << "(" << vector.x << "," << vector.y << "," << vector.z << ")";
-	MString result = str;// ss.str().c_str();
-	//MGlobal::displayInfo(result);
+	std::string temp;
+	temp = "(" + std::to_string(vector.x) + "," + std::to_string(vector.y) + "," + std::to_string(vector.z) + ")";
+	//temp += std::to_string( vector.y);
+	MString result = temp.c_str();
+	//MGlobal::displayInfo("vector:" + result);
+	
+	//char* str = new char[50];
+	//sprintf_s(str, 50, "(%f,%f,%f)", vector.x, vector.y, vector.z);
+	return MString(temp.c_str());
+}
+
+MString BasicFunc::ToCMDSParamStr(int *arr, size_t count, char concatChar)
+{
+	MString testStr = "";
+	std::stringstream ss;
+	for (size_t i = 0; i < count; i++)
+	{
+		if (i != 0)
+		{
+			ss << concatChar;
+		}
+		ss << arr[i];
+	}
+	//i dont know whether returning a [char*] will cause proplem
+	MString result = ss.str().c_str();
+	//MGlobal::displayInfo("result int array str:" + result);
 	return result;
 }
+
+
+
 
 MObject BasicFunc::GetSelectedObject(int index)
 {
@@ -69,26 +89,26 @@ MDagPath BasicFunc::GetSelectedDagPath(int index)
 	return dagPath;
 }
 
-int BasicFunc::GetSelectedDagPaths(MDagPath ** result)
+MSelectionList BasicFunc::GetSelectedDagPaths()
 {
 	MSelectionList selected;
 	MGlobal::getActiveSelectionList(selected);
-	int count = selected.length();
-	if (count == 0)
-	{
-		return 0;
-	}
-	
-	MDagPath* dagPaths = new MDagPath[count];
-	*result = dagPaths;
-	//MGlobal::displayInfo("there it is");
-	for (int i = 0; i < count; i++)
-	{
-		MDagPath dagPath;
-		selected.getDagPath(i, dagPath);
-		dagPaths[i] = dagPath;
-	}
-	return count;
+	return selected;
+	//int count = selected.length();
+	//if (count == 0)
+	//{
+	//	return 0;
+	//}
+	//MDagPath* dagPaths = new MDagPath[count];
+	//*result = dagPaths;
+	////MGlobal::displayInfo("there it is");
+	//for (int i = 0; i < count; i++)
+	//{
+	//	MDagPath dagPath;
+	//	selected.getDagPath(i, dagPath);
+	//	dagPaths[i] = dagPath;
+	//}
+	//return count;
 }
 
 
@@ -240,6 +260,29 @@ MDagPath BasicFunc::CreateCTL_Crystal(MString ctlName)
 	//MGlobal::displayInfo("circleName_BeforeSub:" + resultName);
 	//resultName = SubUShell(resultName);
 	//MGlobal::displayInfo("circleName_AfterSub:" + resultName);
+	return GetDagPathByName(resultName);
+}
+
+MDagPath BasicFunc::CreateCurve(MVector points[], int ptCount, MString curveName)
+{
+	MString cmdStr = "cmds.curve(n='" + curveName + "',d=1,p=[";
+	for (int i = 0; i < ptCount; i++)
+	{
+		if (i != 0)
+		{
+			cmdStr += ",";
+		}
+		cmdStr += ToCMDSParamStr(points[i]);
+	}
+	int *indices = new int[ptCount];
+	for (int i = 0; i < ptCount; i++)
+	{
+		indices[i] = i;
+	}
+	cmdStr += "],k=[" + ToCMDSParamStr(indices,ptCount) + "])";
+	MGlobal::displayInfo(cmdStr);
+	MString resultName = MGlobal::executePythonCommandStringResult(cmdStr);
+	delete[] indices;
 	return GetDagPathByName(resultName);
 }
 

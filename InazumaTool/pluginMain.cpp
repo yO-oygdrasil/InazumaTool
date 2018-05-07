@@ -46,7 +46,8 @@ MStatus initializePlugin(MObject obj)
 	paramStr = MPCMap::MPCType::BindFinger_CTL_L;
 	plugin.addMenuItem("Bind Finger using CTL L", subMenuName_bodyBind, "InazumaCommand", paramStr);
 	
-
+	paramStr = MPCMap::MPCType::CreateJointsCurve;
+	plugin.addMenuItem("Create Joints Curve", subMenuName_create, "InazumaCommand", paramStr);
 	return MStatus::kSuccess;
 }
 
