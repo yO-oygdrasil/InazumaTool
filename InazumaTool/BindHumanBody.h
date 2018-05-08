@@ -6,6 +6,7 @@
 #include <maya/MFnIkHandle.h>
 #include <maya/MFnIkSolver.h>
 #include <maya/MDGModifier.h>
+#include <maya/MSelectionList.h>
 //#include <maya/MDagModifier.h>
 #include "JointProcess.h"
 #include "BasicFunc.h"
@@ -29,6 +30,10 @@ public:
 
 	static bool BindReverseFootRPIK();
 	static bool BindReverseFootRPIK(MDagPath& legRootDagPath, MDagPath& ankleDagPath, MDagPath& middleDagPath, MDagPath& endDagPath);
-	
+
+
+	static void ConvertJointLinesToHair(MSelectionList& jointList);
+
+
 };
 

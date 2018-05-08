@@ -230,8 +230,6 @@ bool BindHumanBody::BindRPIK(MDagPath & rootDagPath, MDagPath & endDagPath, MDag
 
 #pragma region Foot
 
-
-
 bool BindHumanBody::AddReverseFootBone(MDagPath **reverseBones)
 {
 	MSelectionList selected;
@@ -349,6 +347,13 @@ bool BindHumanBody::BindReverseFootRPIK(MDagPath & legRootDagPath, MDagPath & an
 	return true;
 }
 
+#pragma endregion
 
+#pragma region Hair
+
+void BindHumanBody::ConvertJointLinesToHair(MSelectionList & jointList)
+{
+
+}
 
 #pragma endregion

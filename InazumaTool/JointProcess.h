@@ -27,7 +27,10 @@ public:
 	static bool SetJointLimit(MFnTransform& mfnTrans, JointType jointType);
 
 	//static void CreateJointsCurve(MDagPath** jointDagPaths = NULL);
-	static void CreateJointsCurve(MSelectionList jointDagPaths);
+	static MDagPath CreateJointsCurve(MSelectionList jointDagPaths);
+
+	static void MakeJointsHairChain(MSelectionList jointDagPaths);
+
 private:
 	static bool SetLimit(MFnTransform & mfnTrans, float rxMin, float ryMin, float rzMin, float rxMax, float ryMax, float rzMax, bool inRadian);
 

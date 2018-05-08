@@ -138,7 +138,7 @@ bool JointProcess::SetJointLimit(MFnTransform & mfnTransform, JointType jointTyp
 //}
 
 
-void JointProcess::CreateJointsCurve(MSelectionList jointDagPathList)
+MDagPath JointProcess::CreateJointsCurve(MSelectionList jointDagPathList)
 {
 	int count = jointDagPathList.length();
 	MString curveName = "curve_";
@@ -166,6 +166,17 @@ void JointProcess::CreateJointsCurve(MSelectionList jointDagPathList)
 	{
 		delete[](vectors);
 	}
+
+	return curveDagPath;
+}
+
+void JointProcess::MakeJointsHairChain(MSelectionList jointDagPaths)
+{	
+	//begin convert curve to dynamic
+	MDagPath curveDagPath = CreateJointsCurve(jointDagPaths);
+
+	MString resultStr = MGlobal::executeCommandStringResult("makeCurvesDynamic 2 {\"0\",\"0\",\"0\",\"1\",\"0\"}");
+	MGlobal::displayInfo("message" + resultStr);
 }
 
 
