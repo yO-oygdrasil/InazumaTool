@@ -25,7 +25,7 @@ MStatus initializePlugin(MObject obj)
 	paramStr = MPCMap::MPCType::AddRPIK;
 	plugin.addMenuItem("add rpik", subMenuName_bodyBind, "InazumaCommand", paramStr);
 
-	paramStr = (int)MPCMap::MPCType::AddRPIKPole;
+	paramStr = MPCMap::MPCType::AddRPIKPole;
 	plugin.addMenuItem("add rpik pole", subMenuName_create, "InazumaCommand", paramStr);
 
 	paramStr = MPCMap::MPCType::CreateCTL_CrysTal;

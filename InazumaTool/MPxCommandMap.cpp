@@ -68,7 +68,7 @@ MStatus MPCMap::doIt(const MArgList & args)
 			break;
 		}
 		case MPCType::AddReverseFootBones:
-		{			
+		{
 			BindHumanBody::AddReverseFootBone();
 			break;
 		}

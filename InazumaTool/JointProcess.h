@@ -31,6 +31,10 @@ public:
 
 	static void MakeJointsHairChain(MSelectionList jointDagPaths);
 
+	static MDagPath CreateJoint(MString jtName = "joint");
+	static MDagPath CreateJoint(MVector worldPos, MString jtName = "joint");
+	static MDagPath CreateJoint(MFnIkJoint targetPosJoint, MString jtName = "joint");
+
 private:
 	static bool SetLimit(MFnTransform & mfnTrans, float rxMin, float ryMin, float rzMin, float rxMax, float ryMax, float rzMax, bool inRadian);
 

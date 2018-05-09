@@ -353,6 +353,52 @@ bool BindHumanBody::BindReverseFootRPIK(MDagPath & legRootDagPath, MDagPath & an
 
 void BindHumanBody::ConvertJointLinesToHair(MSelectionList & jointList)
 {
+	int count = jointList.length();
+}
+
+
+#pragma endregion
+
+
+#pragma region MiddleBody
+
+void BindHumanBody::BindBodySplineIK(MSelectionList & jointList)
+{
+	//check if all of selected objects are joint
+	int count = jointList.length();
+	if (count < 2)
+	{
+		return;
+	}
+	MDagPath breastJointDagPath, hipJointDagPath;
+	for (int i = 0; i < count; i++)
+	{
+		MDagPath jtDagPath;
+		if (jointList.getDagPath(i, jtDagPath))
+		{
+			if (!jtDagPath.hasFn(MFn::kJoint))
+			{
+				return;
+			}
+
+			if (i == 0)
+			{
+				breastJointDagPath = jtDagPath;
+			}
+			else if (i == count - 1)
+			{
+				hipJointDagPath = jtDagPath;
+			}
+		}
+		else
+		{
+			return;
+		}
+	}
+
+	//JointProcess::CreateJoint()
+
+
 
 }
 

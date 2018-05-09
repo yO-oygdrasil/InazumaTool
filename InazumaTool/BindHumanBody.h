@@ -34,6 +34,7 @@ public:
 
 	static void ConvertJointLinesToHair(MSelectionList& jointList);
 
+	static void BindBodySplineIK(MSelectionList& jointList);
 
 };
 

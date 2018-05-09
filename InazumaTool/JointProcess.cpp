@@ -179,5 +179,26 @@ void JointProcess::MakeJointsHairChain(MSelectionList jointDagPaths)
 	MGlobal::displayInfo("message" + resultStr);
 }
 
+MDagPath JointProcess::CreateJoint(MString jtName)
+{
+	MFnIkJoint joint;
+	MObject jtObject = joint.create();
+	return MDagPath::getAPathTo(jtObject);
+}
+
+MDagPath JointProcess::CreateJoint(MVector worldPos, MString jtName)
+{
+	MDagPath jointDagPath = CreateJoint(jtName);
+	MFnIkJoint joint(jointDagPath);
+	joint.setTranslation(worldPos, MSpace::kWorld);
+	return jointDagPath;
+}
+
+MDagPath JointProcess::CreateJoint(MFnIkJoint targetPosJoint, MString jtName)
+{
+	MVector worldPos = targetPosJoint.getTranslation(MSpace::kWorld);
+	return CreateJoint(worldPos, jtName);
+}
+
 
 
